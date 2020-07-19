@@ -45,13 +45,9 @@ var satellite3 = new Image();
 satellite3.src = './img/satellite3.png'
 
 //Rotate satellite around the center of canvas
-// document.body.onload = function() {
-//   requestAnimationFrame(mainLoop);
-// };
-
-// document.body.onload = function() {
-//   requestAnimationFrame(mainLoop);
-// };
+document.body.onload = function() {
+  requestAnimationFrame(mainLoop);
+};
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -93,6 +89,7 @@ function mainLoop() {
   // drawImageRotated(satellite1,423, 285, 165, 1, rotation1);
   // drawImageRotated(satellite2,423, 239, 211, 1, rotation2);
   // drawImageRotated(satellite3,423, 193, 257, 1, rotation3);
+
   for (var i=0; i<rotations.length; i++) {
     rotations[i] += speed[i];
     rotations[i] = rotations[i]%360;
@@ -119,7 +116,7 @@ button1.onclick = function () {
   speed.push(getRandomArbitrary(0.5, 1));    
   satellites.push([satellite1,423, 285, 165, 1]);
   displayScore(satellites);
- };
+};
 
 var button2 = document.getElementById("button2")
 button2.onclick = function () {
@@ -141,11 +138,12 @@ function displayScore (array) {
   document.getElementById('score').innerHTML = `${array.length} satellites running around the globe!`;
 }
 
-function deleteRandomSatellite (array){
-  //for(var i = array.length-1;i>=0;i--){
-    array.splice(Math.floor(Math.random()*array.length), 1);
-    console.log(array);
-  //}
+function deleteRandomSatellite (){
+    var randomIndex = Math.floor(Math.random()*satellites.length);
+    satellites.splice(randomIndex, 1);
+    rotations.splice(randomIndex, 1);
+    speed.splice(randomIndex, 1);
+    console.log(satellites);
 }
 
 var deleteButton = document.getElementById("buttonDelete")
@@ -154,5 +152,8 @@ deleteRandomSatellite(satellites);
 displayScore(satellites);
 }
 
-
+var positionButton = document.getElementById("buttonPosition")
+positionButton.onclick = function () {
+  alert(`${rotations}`);
+}
 
