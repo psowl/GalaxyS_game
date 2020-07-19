@@ -33,8 +33,6 @@
 //   ctx.drawImage(satellite3, 423, 193)
 // }
 
-//Rotate satellite around the center of canvas
-
 var globe = new Image();
 globe.src = './img/globe.png'
 var anneau = new Image();
@@ -46,9 +44,14 @@ satellite2.src = './img/satellite2.png'
 var satellite3 = new Image();
 satellite3.src = './img/satellite3.png'
 
-satellite1.onload = function() {
-  requestAnimationFrame(mainLoop);
-};
+//Rotate satellite around the center of canvas
+// document.body.onload = function() {
+//   requestAnimationFrame(mainLoop);
+// };
+
+// document.body.onload = function() {
+//   requestAnimationFrame(mainLoop);
+// };
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -77,7 +80,7 @@ var rotation1 = 0;
 var rotation2 = 0;
 var rotation3 = 0;
 
-function mainLoop(time) {
+function mainLoop() {
   // rotation1+=1;
   // rotation1 = rotation1%360;
   // rotation2-=0.5;
@@ -99,8 +102,6 @@ function mainLoop(time) {
     var cs = satellites[i]; // current satellite
     drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],rotations[i]);
   }
-  
-
   requestAnimationFrame(mainLoop);
 }
 
@@ -115,23 +116,43 @@ var satellites = [[satellite1,423, 285, 165, 1],[satellite2,423, 239, 211, 1],[s
 var button1 = document.getElementById("button1")
 button1.onclick = function () {
   rotations.push(0);
-  speed.push(getRandomArbitrary(0.5, 1))
-  satellites.push([satellite1,423, 285, 165, 1])
+  speed.push(getRandomArbitrary(0.5, 1));    
+  satellites.push([satellite1,423, 285, 165, 1]);
+  displayScore(satellites);
  };
 
- var button2 = document.getElementById("button2")
- button2.onclick = function () {
-   rotations.push(1);
-   speed.push(getRandomArbitrary(0.5, 1))
-   satellites.push([satellite2,423, 239, 211, 1])
-  };
+var button2 = document.getElementById("button2")
+button2.onclick = function () {
+  rotations.push(1);
+  speed.push(getRandomArbitrary(0.5, 1));
+  satellites.push([satellite2,423, 239, 211, 1]);
+  displayScore(satellites);
+};
  
-  var button3 = document.getElementById("button3")
-  button3.onclick = function () {
-    rotations.push(2);
-    speed.push(getRandomArbitrary(0.1, 0.5))
-    satellites.push([satellite3,423, 193, 257, 1])
-   };
+var button3 = document.getElementById("button3")
+button3.onclick = function () {
+  rotations.push(2);
+  speed.push(getRandomArbitrary(0.1, 0.5));
+  satellites.push([satellite3,423, 193, 257, 1]);
+  displayScore(satellites);
+};
   
+function displayScore (array) {
+  document.getElementById('score').innerHTML = `${array.length} satellites running around the globe!`;
+}
 
-   
+function deleteRandomSatellite (array){
+  //for(var i = array.length-1;i>=0;i--){
+    array.splice(Math.floor(Math.random()*array.length), 1);
+    console.log(array);
+  //}
+}
+
+var deleteButton = document.getElementById("buttonDelete")
+deleteButton.onclick = function () {
+deleteRandomSatellite(satellites);
+displayScore(satellites);
+}
+
+
+
