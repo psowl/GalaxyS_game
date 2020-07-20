@@ -56,13 +56,10 @@ function drawImageRotated(img, x, y, anchorPoint, scale, rot) {
   
   ctx.save();
   ctx.translate(x, y);
-  //ctx.setTransform(scale, 0, 0, scale, x, y);
   ctx.translate(img.width/2, anchorPoint);
   ctx.rotate(degtorad(rot));
   ctx.translate(-(img.width/2), -(anchorPoint));
   ctx.drawImage(img, 0, 0);
-  //ctx.drawImage(img, -img.width/2 , -img.height/2);
-  //ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.translate(-x, -y);
   ctx.restore();
 }
@@ -90,14 +87,16 @@ function mainLoop() {
   // drawImageRotated(satellite2,423, 239, 211, 1, rotation2);
   // drawImageRotated(satellite3,423, 193, 257, 1, rotation3);
 
-  for (var i=0; i<rotations.length; i++) {
-    rotations[i] += speed[i];
-    rotations[i] = rotations[i]%360;
-  }
+  // for (var i=0; i<rotations.length; i++) {
+  //   rotations[i] += speed[i];
+  //   rotations[i] = rotations[i]%360;
+  // }
 
   for (var i=0; i<satellites.length; i++) {
     var cs = satellites[i]; // current satellite
-    drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],rotations[i]);
+    cs[6] += cs[5];
+    cs[6] = cs[6]%360;
+    drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],cs[6] );
   }
   requestAnimationFrame(mainLoop);
 }
@@ -106,31 +105,35 @@ function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-var rotations = [0,0,0];
-var speed = [getRandomArbitrary(0.5, 1),getRandomArbitrary(0.5, 1),getRandomArbitrary(0.1, 0.5)];
-var satellites = [[satellite1,423, 285, 165, 1],[satellite2,423, 239, 211, 1],[satellite3,423, 193, 257, 1]];
+// var rotations = [];
+// var speed = [];
+var satellites = [];
+
+// var rotations = [0,0,0];
+// var speed = [getRandomArbitrary(0.5, 1),getRandomArbitrary(0.5, 1),getRandomArbitrary(0.1, 0.5)];
+//var satellites = [[satellite1,423, 285, 165, 1],[satellite2,423, 239, 211, 1],[satellite3,423, 193, 257, 1]];
 
 var button1 = document.getElementById("button1")
 button1.onclick = function () {
-  rotations.push(0);
-  speed.push(getRandomArbitrary(0.5, 1));    
-  satellites.push([satellite1,423, 285, 165, 1]);
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.5, 1));    
+  satellites.push([satellite1, 423, 285, 165, 1, getRandomArbitrary(0.5, 1), 0]);
   displayScore(satellites);
 };
 
 var button2 = document.getElementById("button2")
 button2.onclick = function () {
-  rotations.push(1);
-  speed.push(getRandomArbitrary(0.5, 1));
-  satellites.push([satellite2,423, 239, 211, 1]);
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.5, 1));
+  satellites.push([satellite2, 423, 239, 211, 1, getRandomArbitrary(0.5, 1), 0]);
   displayScore(satellites);
 };
  
 var button3 = document.getElementById("button3")
 button3.onclick = function () {
-  rotations.push(2);
-  speed.push(getRandomArbitrary(0.1, 0.5));
-  satellites.push([satellite3,423, 193, 257, 1]);
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.1, 0.5));
+  satellites.push([satellite3, 423, 193, 257, 1,getRandomArbitrary(0.1, 0.5), 0]);
   displayScore(satellites);
 };
   
@@ -141,8 +144,8 @@ function displayScore (array) {
 function deleteRandomSatellite (){
     var randomIndex = Math.floor(Math.random()*satellites.length);
     satellites.splice(randomIndex, 1);
-    rotations.splice(randomIndex, 1);
-    speed.splice(randomIndex, 1);
+    // rotations.splice(randomIndex, 1);
+    // speed.splice(randomIndex, 1);
     console.log(satellites);
 }
 
@@ -154,6 +157,11 @@ displayScore(satellites);
 
 var positionButton = document.getElementById("buttonPosition")
 positionButton.onclick = function () {
-  alert(`${rotations}`);
+  var satellitesPositionArray = [];
+  for (var i=0; i<satellites.length; i++) {
+  var eachSatellitesPosition = satellites[i][6]; 
+  satellitesPositionArray.push(eachSatellitesPosition);
+}  
+alert(satellitesPositionArray);
 }
 
