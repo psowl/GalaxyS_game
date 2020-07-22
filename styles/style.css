@@ -1,6 +1,56 @@
+@keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -300px 0; }
+}
+@-moz-keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -300px 0; }
+}
+@-webkit-keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -300px 0; }
+}
+@-ms-keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -300px 0; }
+}
+@-o-keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -300px 0; }
+}
+
+
 
 canvas {
-    background-color: black;
+    /*background-color: black;*/
+    background: transparent;
     border: 1px solid red;
+    /* z-index: 10; */
+    /* position: absolute; */
     /*width:  450px;*/
 }
+
+body {
+    /* z-index: 0; */
+    /* width: 900px;
+    height: 900px;
+    position: absolute; */
+    background-color: black;
+    background: url("../img/space.png") repeat ;
+    -moz-animation:animatedBackground 150s linear infinite;
+    -ms-animation:animatedBackground 150s linear infinite;
+    -o-animation:animatedBackground 150s linear infinite;
+    -webkit-animation:animatedBackground 150s linear infinite;
+    animation:animatedBackground 150s linear infinite;
+
+}
+
+
+  
+#container {
+    /* position: relative; */
+    /* top: 100px; left: 40px; */
+}
+  
+
+  

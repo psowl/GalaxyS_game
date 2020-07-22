@@ -43,6 +43,13 @@ var satellite2 = new Image();
 satellite2.src = './img/satellite2.png'
 var satellite3 = new Image();
 satellite3.src = './img/satellite3.png'
+// var space = new Image();
+// space.src = './img/space.png'
+
+
+// space.onload = function () {
+//   ctx.drawImage(space, 0, 0)
+// }
 
 //Rotate satellite around the center of canvas
 document.body.onload = function() {
@@ -53,7 +60,6 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
 function drawImageRotated(img, x, y, anchorPoint, scale, rot) {
-  
   ctx.save();
   ctx.translate(x, y);
   ctx.translate(img.width/2, anchorPoint);
@@ -96,7 +102,9 @@ function mainLoop() {
     var cs = satellites[i]; // current satellite
     cs[6] += cs[5];
     cs[6] = cs[6]%360;
-    drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],cs[6] );
+    drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],cs[6]); 
+    // example : drawImageRotated([satellite1, 423, 285, 165, 1, getRandomArbitrary(0.5, 1), 0]), 
+    //which is (img, x, y, anchorPoint, scale, rotation speed randomly beetween 0.5-1, rot angle at 0)
   }
   requestAnimationFrame(mainLoop);
 }
@@ -164,4 +172,5 @@ positionButton.onclick = function () {
 }  
 alert(satellitesPositionArray);
 }
+
 
