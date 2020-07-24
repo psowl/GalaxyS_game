@@ -1,24 +1,23 @@
 @keyframes animatedBackground {
     0% { background-position: 0 0; }
-    100% { background-position: -300px 0; }
+    100% { background-position: -1920px 0; }
 }
 @-moz-keyframes animatedBackground {
     0% { background-position: 0 0; }
-    100% { background-position: -300px 0; }
+    100% { background-position: -1920px 0; }
 }
 @-webkit-keyframes animatedBackground {
     0% { background-position: 0 0; }
-    100% { background-position: -300px 0; }
+    100% { background-position: -1920px 0; }
 }
 @-ms-keyframes animatedBackground {
     0% { background-position: 0 0; }
-    100% { background-position: -300px 0; }
+    100% { background-position: -1920px 0; }
 }
 @-o-keyframes animatedBackground {
     0% { background-position: 0 0; }
-    100% { background-position: -300px 0; }
+    100% { background-position: -1920px 0; }
 }
-
 
 
 canvas {
@@ -31,26 +30,24 @@ canvas {
 }
 
 body {
-    /* z-index: 0; */
-    /* width: 900px;
-    height: 900px;
-    position: absolute; */
     background-color: black;
-    background: url("../img/space.png") repeat ;
-    -moz-animation:animatedBackground 150s linear infinite;
-    -ms-animation:animatedBackground 150s linear infinite;
-    -o-animation:animatedBackground 150s linear infinite;
-    -webkit-animation:animatedBackground 150s linear infinite;
-    animation:animatedBackground 150s linear infinite;
+    background: url("../img/spaceblue.png") repeat ;
+
+    /* 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+    */
+
+    -moz-animation:animatedBackground 400s linear infinite;
+    -ms-animation:animatedBackground 400s linear infinite;
+    -o-animation:animatedBackground 400s linear infinite;
+    -webkit-animation:animatedBackground 400s linear infinite;
+    animation:animatedBackground 400s linear infinite;
 
 }
 
-
-  
-#container {
-    /* position: relative; */
-    /* top: 100px; left: 40px; */
+#score {
+    color:#ADD8E6;
 }
-  
-
-  
