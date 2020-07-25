@@ -156,12 +156,14 @@ positionButton.onclick = function () {
 alert(satellitesPositionArray);
 }
 
-var positionRocketButton = document.getElementById("buttonRocketsPosition")
+var positionRocketButton = document.getElementById("buttonRocketsPosition");
 positionRocketButton.onclick = function () {
   var rocketsPositionArray = [];
   for (var i=0; i<rockets.length; i++) {
-  var eachRocketPositionX = rockets[i][[1]]
-  var eachRocketPositionY = rockets[i][[2]]
+  // var eachRocketPositionX = rockets[i][[1]]
+  // var eachRocketPositionY = rockets[i][[2]]
+  var eachRocketPositionX = rockets[i][1]
+  var eachRocketPositionY = rockets[i][2]
   rocketsPositionArray.push(`X=${eachRocketPositionX}`, `Y=${eachRocketPositionY}`);
   
 }  
@@ -169,10 +171,124 @@ positionRocketButton.onclick = function () {
 alert(rocketsPositionArray);
 }
 
-var buttonAriane = document.getElementById("buttonAriane")
-buttonAriane.onclick = function () {
+function addSatellite(position){
+  var targetSatellite;
+  var targetY;
+  var targetAnchorpoint;
+  var targetSpeed;
+  if(position == 1){
+    targetSatellite = satellite1;
+    targetY = 285;
+    targetAnchorpoint = 165;
+    targetSpeed = getRandomArbitrary(0.5, 1);
+  } else if(position == 2){
+    targetSatellite = satellite2;
+    targetY = 239;
+    targetAnchorpoint = 211;
+    targetSpeed = getRandomArbitrary(0.5, 1);
+  } else if(position == 3){
+    targetSatellite = satellite3;
+    targetY = 193;
+    targetAnchorpoint = 257;
+    targetSpeed = getRandomArbitrary(0.1, 0.5);
+  }
+  satellites.push([targetSatellite, 423, targetY, targetAnchorpoint, 1, targetSpeed, 0]);
+  displayScore(satellites);
+}
+
+function addRocket() {
   rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, 250, 0.05, 0.4, 0]);
 }
+
+var buttonAriane = document.getElementById("buttonAriane")
+buttonAriane.onclick = function () {
+  addRocket();
+}
+
+var nextspacebarFunction = "goaddRocket";
+
+//make satellite appear when space bar is pressed
+document.onkeydown = function (e) {
+  console.log('keydown');
+  if(e.keyCode === 32) {
+    if (nextspacebarFunction == "goaddRocket") {
+      addRocket();
+      nextspacebarFunction = "goaddSatellite";
+    } else if(nextspacebarFunction == "goaddSatellite") {
+      var lastRocket = rockets[rockets.length-1];
+      var lastRocketY = lastRocket[2];
+      //alert(lastRocketY);
+      checkaddSatellitevsRocketPosition(lastRocketY);
+      //addSatellite();
+      nextspacebarFunction = "goaddRocket";
+    }
+  }
+}
+
+function checkExistingSatellitesPositions(position) {
+  //alert('checkExistingSatellitesPositions');
+  var rotLeft = 350;
+  var rotRight = 10;
+  var willCrash = false;
+  for (var i = 0; i<satellites.length; i++) {
+    //if((position >= rotLeft) && (position <= rotRight)) {
+    var testedSatellite = satellites[i];
+    //alert(testedSatellite[6]);
+    if ((testedSatellite[6] >= rotLeft) || (testedSatellite[6] <= rotRight)) {
+       // dans zone a risque
+       if ((testedSatellite[2] == 285) && (position == 1)) {
+        alert('BOOM avec 1');
+        willCrash = true;
+       } else if ((testedSatellite[2] == 239) && (position == 2)) {
+        alert('BOOM avec 2');
+        willCrash = true;
+       } else if ((testedSatellite[2] == 193) && (position == 3)) {
+        alert('BOOM avec 3');
+        willCrash = true;
+       }
+
+
+    }
+  }
+  if (willCrash == false) {
+    addSatellite(position);
+  }
+
+}
+
+
+function checkaddSatellitevsRocketPosition(y) {
+//si la position Y de la fusée est = 250
+// alors addSatellite(2);
+  var rocketOffset = 50;
+  y += rocketOffset;
+  var borderBetween1And2 = 280;
+  var borderBetween2And3 = 233;
+  var borderLowest = 325;
+  var borderHighest = 185;
+
+  if ((y <= borderBetween2And3)&&(y >= borderHighest)) {
+    checkExistingSatellitesPositions(3);
+    //addSatellite(3);
+  }
+  else if ((y <= borderBetween1And2) && (y >= borderBetween2And3)) {
+    checkExistingSatellitesPositions(2);
+    //addSatellite(2);
+  }
+  else if ((y >= borderBetween1And2) && (y <= borderLowest)) {
+    checkExistingSatellitesPositions(1);
+    //addSatellite(1);
+  } else if (y >= borderLowest) {
+    alert("too early");
+  } else {
+    alert("too late");
+  }
+  //alert('y = ' + y);
+}
+
+
+
+
 
 // EasingFunctions = {
 //   linear: function (t) {
