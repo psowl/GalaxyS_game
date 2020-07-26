@@ -148,7 +148,7 @@ function addRadar(){
 // var nextspacebarFunction = "goaddRadar";
 
 function onSpaceBarReleased() {
-  alert('onSpaceBarReleased');
+  // alert('onSpaceBarReleased');
   if (nextspacebarFunction == "goaddRadar") {
     addRadar();
     nextspacebarFunction = "goaddRocket";
@@ -160,9 +160,9 @@ function onSpaceBarReleased() {
       var lastRocket = rockets[rockets.length-1];
       var lastRocketY = lastRocket[2];
       var lastRocketScale = lastRocket[4];
-      var rocketAnchorPoint = lastRocket[3];
+      var rocketAnchorPointY = lastRocket[3];
       //alert(lastRocketY);
-      checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPoint);
+      checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPointY);
       //addSatellite();
       nextspacebarFunction = "goaddRocket";
     }
@@ -189,29 +189,29 @@ buttonSpacebar.onclick = function () {
 };
 
 
-// var button1 = document.getElementById("button1")
-// button1.onclick = function () {
-//   // rotations.push(0);
-//   // speed.push(getRandomArbitrary(0.5, 1));    
-//   satellites.push([satellite1, 423, 285, satellite1Y, 1, getRandomArbitrary(0.5, 1), 0, 27]);
-//   displayScore(satellites);
-// };
+var button1 = document.getElementById("button1")
+button1.onclick = function () {
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.5, 1));    
+  satellites.push([satellite1, 423, satellite1Y, 165, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+  displayScore(satellites);
+};
 
-// var button2 = document.getElementById("button2")
-// button2.onclick = function () {
-//   // rotations.push(0);
-//   // speed.push(getRandomArbitrary(0.5, 1));
-//   satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), 0, 27]);
-//   displayScore(satellites);
-// };
+var button2 = document.getElementById("button2")
+button2.onclick = function () {
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.5, 1));
+  satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+  displayScore(satellites);
+};
  
-// var button3 = document.getElementById("button3")
-// button3.onclick = function () {
-//   // rotations.push(0);
-//   // speed.push(getRandomArbitrary(0.1, 0.5));
-//   satellites.push([satellite3, 423, satellite3Y, 257, 1,getRandomArbitrary(0.1, 0.5), 0, 27]);
-//   displayScore(satellites);
-// };
+var button3 = document.getElementById("button3")
+button3.onclick = function () {
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.1, 0.5));
+  satellites.push([satellite3, 423, satellite3Y, 257, 1,getRandomArbitrary(0.1, 0.5), 0, 27]);
+  displayScore(satellites);
+};
   
 function displayScore (array) {
   document.getElementById('score').innerHTML = `${array.length} satellites running around the globe!`;
@@ -241,8 +241,6 @@ deleteRandomSatellite(satellites);
 displayScore(satellites);
 }
 
-
-
 var positionButton = document.getElementById("buttonPosition")
 positionButton.onclick = function () {
   var satellitesPositionArray = [];
@@ -259,9 +257,9 @@ positionRocketButton.onclick = function () {
   for (var i=0; i<rockets.length; i++) {
   // var eachRocketPositionX = rockets[i][[1]]
   // var eachRocketPositionY = rockets[i][[2]]
-  var eachRocketPositionX = rockets[i][1]
-  var eachRocketPositionY = rockets[i][2]
-  var eachRocketPositionOrientation = rockets[i][6]
+  var eachRocketPositionX = rockets[i][1];
+  var eachRocketPositionY = rockets[i][2];
+  var eachRocketPositionOrientation = rockets[i][6];
   rocketsPositionArray.push(`X=${eachRocketPositionX}`, `Y=${eachRocketPositionY}`, `Orientation=${eachRocketPositionOrientation}` );
 }  
 alert(rocketsPositionArray);
@@ -283,7 +281,7 @@ positionRadarButton.onclick = function () {
 // };
 
 function getradarPosition() {
-  var radarCurrentPosition = radars[0][6]; 
+  var radarCurrentPosition = radars[radars.length - 1][6]; 
   alert(radarCurrentPosition);
 }
 
@@ -350,14 +348,23 @@ document.onkeydown = function (e) {
 
 function checkExistingSatellitesPositions(position) {
   //alert('checkExistingSatellitesPositions');
-  var rotLeft = 350;
-  var rotRight = 10;
+
+  // var rotLeft = 350;
+  // var rotRight = 10;
+  var rocketRotangle = rockets[rockets.length-1][6];
   var willCrash = false;
+  var zoneAnglemargin = 7;
+  if (position == 1) {
+    zoneAnglemargin = 15;
+  } else if (position == 3) {
+    zoneAnglemargin = 5;
+  }
+
   for (var i = 0; i<satellites.length; i++) {
     //if((position >= rotLeft) && (position <= rotRight)) {
     var testedSatellite = satellites[i];
     //alert(testedSatellite[6]);
-    if ((testedSatellite[6] >= rotLeft) || (testedSatellite[6] <= rotRight)) {
+    if ((testedSatellite[6] <= rocketRotangle + zoneAnglemargin) && (testedSatellite[6] >= rocketRotangle - zoneAnglemargin)) {
        // dans zone a risque
        if ((testedSatellite[2] == satellite1Y) && (position == 1)) {
         alert('BOOM avec 1');
