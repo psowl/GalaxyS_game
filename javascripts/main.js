@@ -139,6 +139,8 @@ function addRadar(){
   radars.push([radar, 354, 192, 258, 1, 0.4, 0, 96]);
 }
 
+// var nextspacebarFunction = "goaddRadar";
+
 function onSpaceBarReleased() {
   alert('onSpaceBarReleased');
   if (nextspacebarFunction == "goaddRadar") {
@@ -146,6 +148,7 @@ function onSpaceBarReleased() {
     nextspacebarFunction = "goaddRocket";
   } else if (nextspacebarFunction == "goaddRocket") {
       addRocket();
+      // deleteLastRadar();
       nextspacebarFunction = "goaddSatellite";
     } else if(nextspacebarFunction == "goaddSatellite") {
       var lastRocket = rockets[rockets.length-1];
@@ -178,8 +181,6 @@ buttonSpacebar.onclick = function () {
     nextspacebarFunction = "goaddRocket";
   }*/
 };
-
-
 
 
 // var button1 = document.getElementById("button1")
@@ -218,11 +219,23 @@ function deleteRandomSatellite (){
     console.log(satellites);
 }
 
+function deleteLastRadar () {
+  var lastRadar = radars[radars.length-1];
+  radars.splice(lastRadar,1);
+}
+
+var buttonDeleteRadar = document.getElementById("buttonDeleteRadar")
+buttonDeleteRadar.onclick = function () {
+  deleteLastRadar();
+}
+
 var deleteButton = document.getElementById("buttonDelete")
 deleteButton.onclick = function () {
 deleteRandomSatellite(satellites);
 displayScore(satellites);
 }
+
+
 
 var positionButton = document.getElementById("buttonPosition")
 positionButton.onclick = function () {
@@ -297,7 +310,7 @@ function addSatellite(position){
   }
 
 function addRocket() {
-  var radarCurrentPosition = radars[0][6];
+  var radarCurrentPosition = radars[radars.length-1][6];
   //rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, 250, 0, 0.4, 0]);
   rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, /*250*/150, 0.05, 0.4, radarCurrentPosition, 45]);
 }
