@@ -35,12 +35,12 @@ function drawImageRotated(img, x, y, anchorPointY, scale, rot, anchorPointX) {
 
 function drawRocketRotated(img, x, y, anchorPointY, scale, rot, anchorPointX) {
   ctx.save();
-  ctx.translate(canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2);
+  ctx.translate(canvas.width/2-anchorPointX ,canvas.height/2 - anchorPointY);
   //ctx.translate(x, y);
   ctx.translate(anchorPointX, anchorPointY);
   ctx.rotate(degtorad(rot));
   ctx.scale(scale, scale);
-  ctx.translate(0, y-(canvas.height/2 - ariane.height/2));
+  ctx.translate(0, y-(canvas.height/2 - anchorPointY));
   ctx.translate(-(anchorPointX), -(anchorPointY));
   ctx.drawImage(img, 0, 0);
   // ctx.translate(-x, -y);
@@ -101,7 +101,7 @@ function mainLoop() {
     var cr = rockets[i]; // current rocket
     // cr[1] += cr[5];
     cr[2] -= cr[5]/2;
-    if (cr[4]<0.7){
+    if (cr[4]<1){
       // cr[4] = EasingFunctions.easeInOutQuad(0.003) * 1;
       cr[4] += 0.006;
     }
@@ -124,6 +124,12 @@ function getRandomArbitrary(min, max) {
 var satellites = [];
 var rockets = [];
 var radars = [];
+var satellite1Y= 285;
+var satellite2Y = 239;
+var satellite3Y = 193;
+var rocketAnchorX = 18;
+var rocketAnchorY = 123;
+
 
 // var rotations = [0,0,0];
 // var speed = [getRandomArbitrary(0.5, 1),getRandomArbitrary(0.5, 1),getRandomArbitrary(0.1, 0.5)];
@@ -187,7 +193,7 @@ buttonSpacebar.onclick = function () {
 // button1.onclick = function () {
 //   // rotations.push(0);
 //   // speed.push(getRandomArbitrary(0.5, 1));    
-//   satellites.push([satellite1, 423, 285, 165, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+//   satellites.push([satellite1, 423, 285, satellite1Y, 1, getRandomArbitrary(0.5, 1), 0, 27]);
 //   displayScore(satellites);
 // };
 
@@ -195,7 +201,7 @@ buttonSpacebar.onclick = function () {
 // button2.onclick = function () {
 //   // rotations.push(0);
 //   // speed.push(getRandomArbitrary(0.5, 1));
-//   satellites.push([satellite2, 423, 239, 211, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+//   satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), 0, 27]);
 //   displayScore(satellites);
 // };
  
@@ -203,7 +209,7 @@ buttonSpacebar.onclick = function () {
 // button3.onclick = function () {
 //   // rotations.push(0);
 //   // speed.push(getRandomArbitrary(0.1, 0.5));
-//   satellites.push([satellite3, 423, 193, 257, 1,getRandomArbitrary(0.1, 0.5), 0, 27]);
+//   satellites.push([satellite3, 423, satellite3Y, 257, 1,getRandomArbitrary(0.1, 0.5), 0, 27]);
 //   displayScore(satellites);
 // };
   
@@ -257,9 +263,7 @@ positionRocketButton.onclick = function () {
   var eachRocketPositionY = rockets[i][2]
   var eachRocketPositionOrientation = rockets[i][6]
   rocketsPositionArray.push(`X=${eachRocketPositionX}`, `Y=${eachRocketPositionY}`, `Orientation=${eachRocketPositionOrientation}` );
-  
 }  
-
 alert(rocketsPositionArray);
 }
 
@@ -291,17 +295,17 @@ function addSatellite(position){
     var targetAngle= rockets[rockets.length-1][6]; 
     if(position == 1){
       targetSatellite = satellite1;
-      targetY = 285;
+      targetY = satellite1Y;
       targetAnchorpoint = 165;
       targetSpeed = getRandomArbitrary(0.5, 1);
     } else if(position == 2){
       targetSatellite = satellite2;
-      targetY = 239;
+      targetY = satellite2Y;
       targetAnchorpoint = 211;
       targetSpeed = getRandomArbitrary(0.5, 1);
     } else if(position == 3){
       targetSatellite = satellite3;
-      targetY = 193;
+      targetY = satellite3Y;
       targetAnchorpoint = 257;
       targetSpeed = getRandomArbitrary(0.1, 0.5);
     }
@@ -312,7 +316,7 @@ function addSatellite(position){
 function addRocket() {
   var radarCurrentPosition = radars[radars.length-1][6];
   //rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, 250, 0, 0.4, 0]);
-  rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, /*250*/150, 0.05, 0.4, radarCurrentPosition, 45]);
+  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, /*0.05*/ 1, 0.4, radarCurrentPosition, rocketAnchorX]);
 }
 
 var buttonAriane = document.getElementById("buttonAriane")
@@ -343,6 +347,7 @@ document.onkeydown = function (e) {
   }
 }
 
+
 function checkExistingSatellitesPositions(position) {
   //alert('checkExistingSatellitesPositions');
   var rotLeft = 350;
@@ -354,13 +359,13 @@ function checkExistingSatellitesPositions(position) {
     //alert(testedSatellite[6]);
     if ((testedSatellite[6] >= rotLeft) || (testedSatellite[6] <= rotRight)) {
        // dans zone a risque
-       if ((testedSatellite[2] == 285) && (position == 1)) {
+       if ((testedSatellite[2] == satellite1Y) && (position == 1)) {
         alert('BOOM avec 1');
         willCrash = true;
-       } else if ((testedSatellite[2] == 239) && (position == 2)) {
+       } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
         alert('BOOM avec 2');
         willCrash = true;
-       } else if ((testedSatellite[2] == 193) && (position == 3)) {
+       } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
         alert('BOOM avec 3');
         willCrash = true;
        }
