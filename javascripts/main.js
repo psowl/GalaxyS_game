@@ -13,8 +13,8 @@ ariane.src = 'img/ariane.png'
 var radar = new Image();
 radar.src = 'img/radar.png'
 
-var satellite1_crashed = new Image();
-satellite1_crashed.src = './img/satellite1_crashed.png'
+// var satellite1_crashed = new Image();
+// satellite1_crashed.src = './img/satellite1_crashed.png'
 
 var boom = 0;
 var chancePoints = 5;
@@ -90,17 +90,13 @@ function mainLoop() {
 
   for (var i=0; i<satellites.length; i++) {
     var cs = satellites[i]; // current satellite
-
-    /*if (cs[5] === 0) {  // s'il ne bouge plus
+    if (cs[5] === 3) {  // s'il ne bouge plus
         cs[4] += 0.05;
+
         // TO DELETE SATELLITE
           // var lastRadar = radars[radars.length-1];
           // radars.splice(lastRadar,1);
-        
-    
-      }*/
-
-
+      }
       // X := originX + cos(angle)*radius;
       // Y := originY + sin(angle)*radius;
     
@@ -128,7 +124,7 @@ function mainLoop() {
     cr[2] -= cr[5]/2;
     if (cr[4]<1){
       // cr[4] = EasingFunctions.easeInOutQuad(0.003) * 1;
-      cr[4] += 0.006;
+      cr[4] += 0.030;
     }
     
     drawRocketRotated(cr[0],cr[1],cr[2], cr[3],cr[4],cr[6], cr[7]); 
@@ -382,7 +378,7 @@ function addSatellite(position){
 function addRocket() {
   var radarCurrentPosition = radars[radars.length-1][6];
   //rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, 250, 0, 0.4, 0]);
-  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, /*0.05*/ 1, 0.4, radarCurrentPosition, rocketAnchorX]);
+  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, 0.05, 0.4, radarCurrentPosition, rocketAnchorX]);
 }
 
 var buttonAriane = document.getElementById("buttonAriane")
@@ -444,11 +440,11 @@ function checkExistingSatellitesPositions(position) {
          // dans zone a risque
          if ((testedSatellite[2] == satellite1Y) && (position == 1)) {
           alert('BOOM avec 1');
-          
           //if (testedSatellite[5] === 0) {
           //  alert(`Hey tu m'avais déjà touché, je suis loin maintenant MAIS peut-être un autre satellite va bouger sinon, bravo, ça va créer un` );
           //} else {
-            //testedSatellite[5] = 0;
+
+            testedSatellite[5] = 3 ; // to stop rotation on itself
             willCrash = true;
             break;
           //}
@@ -475,7 +471,7 @@ function checkExistingSatellitesPositions(position) {
         // dans zone a risque
         if ((testedSatellite[2] == satellite1Y) && (position == 1)) {
           // alert(`BOOM avec 1` );
-          testedSatellite[5] = 0;
+          // testedSatellite[5] = 0;
           // testedSatellite[1] = satellite1_crashed;
           // testedSatellite[4] = 2;
           willCrash = true;
@@ -498,9 +494,9 @@ function checkExistingSatellitesPositions(position) {
     addSatellite(position);
   } else {
     boom += 1;
-    alert(`boom: ${boom}`)
+    // alert(`boom: ${boom}`)
     chancePoints -= 1;
-    alert(`chancePoint:: ${chancePoints}`)
+    // alert(`chancePoint:: ${chancePoints}`)
     displayScore (satellites);
     if (chancePoints === 0) {
     gameOver();
