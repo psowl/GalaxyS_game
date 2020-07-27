@@ -16,6 +16,10 @@ radar.src = 'img/radar.png'
 var satellite1_crashed = new Image();
 satellite1_crashed.src = './img/satellite1_crashed.png'
 
+var boom = 0;
+var chancePoints = 5;
+
+
 //Rotate satellite around the center of canvas
 document.body.onload = function() {
   requestAnimationFrame(mainLoop);
@@ -242,7 +246,7 @@ var button2 = document.getElementById("button2")
 button2.onclick = function () {
   // rotations.push(0);
   // speed.push(getRandomArbitrary(0.5, 1));
-  satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+  satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), getRandomArbitrary(0, 360), 27]);
   displayScore(satellites);
 };
  
@@ -255,7 +259,8 @@ button3.onclick = function () {
 };
   
 function displayScore (array) {
-  document.getElementById('score').innerHTML = `${array.length} satellites running around the globe!`;
+  var satellitesRunning = array.length - boom;
+  document.getElementById('score').innerHTML = `You have ${satellitesRunning} satellites running around the globe! You have ${chancePoints} chances ! `;
 }
 
 function deleteRandomSatellite (){
@@ -377,7 +382,7 @@ function addSatellite(position){
 function addRocket() {
   var radarCurrentPosition = radars[radars.length-1][6];
   //rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, 250, 0, 0.4, 0]);
-  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, /*0.05*/ 1, 0.4, /*radarCurrentPosition*/ 90, rocketAnchorX]);
+  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, /*0.05*/ 1, 0.4, radarCurrentPosition, rocketAnchorX]);
 }
 
 var buttonAriane = document.getElementById("buttonAriane")
@@ -491,7 +496,20 @@ function checkExistingSatellitesPositions(position) {
   }
   if (willCrash == false) {
     addSatellite(position);
+  } else {
+    boom += 1;
+    alert(`boom: ${boom}`)
+    chancePoints -= 1;
+    alert(`chancePoint:: ${chancePoints}`)
+    displayScore (satellites);
+    if (chancePoints === 0) {
+    gameOver();
   }
+  }
+}
+
+function gameOver() {
+    alert('YOU LOST !');
 }
 
 
