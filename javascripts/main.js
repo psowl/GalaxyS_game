@@ -82,6 +82,32 @@ function mainLoop() {
   //   rotations[i] = rotations[i]%360;
   // }
   
+
+
+  for (var i=0; i<satellites.length; i++) {
+    var cs = satellites[i]; // current satellite
+
+    /*if (cs[5] === 0) {  // s'il ne bouge plus
+        cs[4] += 0.05;
+        // TO DELETE SATELLITE
+          // var lastRadar = radars[radars.length-1];
+          // radars.splice(lastRadar,1);
+        
+    
+      }*/
+
+
+      // X := originX + cos(angle)*radius;
+      // Y := originY + sin(angle)*radius;
+    
+    cs[6] += cs[5];
+    cs[6] = cs[6]%360;
+
+    drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],cs[6], cs[7]); 
+    // example : drawImageRotated([satellite1, 423, 285, 165, 1, getRandomArbitrary(0.5, 1), 0]), 
+    //which is (img, x, y, anchorPointY, scale, rotation speed randomly beetween 0.5-1, rot angle at 0,anchorPointX)
+  }
+
   for (var i=0; i<radars.length; i++) {
     var cRadar = radars[i]; // current radar
     cRadar[6] += cRadar[5];
@@ -91,14 +117,6 @@ function mainLoop() {
     //which is (img, x, y, anchorPoint, scale, rotation speed randomly beetween 0.5-1, rot angle at 0)
   }
 
-  for (var i=0; i<satellites.length; i++) {
-    var cs = satellites[i]; // current satellite
-    cs[6] += cs[5];
-    cs[6] = cs[6]%360;
-    drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],cs[6], cs[7]); 
-    // example : drawImageRotated([satellite1, 423, 285, 165, 1, getRandomArbitrary(0.5, 1), 0]), 
-    //which is (img, x, y, anchorPoint, scale, rotation speed randomly beetween 0.5-1, rot angle at 0)
-  }
 
   for (var i=0; i<rockets.length; i++) {
     var cr = rockets[i]; // current rocket
@@ -191,12 +209,32 @@ buttonSpacebar.onclick = function () {
   }*/
 };
 
+// function getRandomOrientedSatellite() {
+
+//   for (var i = 0 ; i < 10 ; i++) {
+//     var speed = getRandomArbitrary(0.5, 1);
+//     var orientation = getRandomArbitrary(0, 2);
+//     if (orientation < 1) {
+//       speed = -speed;
+//     }
+//     satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
+//   }
+//   displayScore(satellites);
+// }
 
 var button1 = document.getElementById("button1")
 button1.onclick = function () {
   // rotations.push(0);
   // speed.push(getRandomArbitrary(0.5, 1));    
-  satellites.push([satellite1, 423, satellite1Y, 165, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+  //satellites.push([satellite1, 423, satellite1Y, 165, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+  for (var i = 0 ; i < 10 ; i++) {
+    var speed = getRandomArbitrary(0.5, 1);
+    var orientation = getRandomArbitrary(0, 2);
+    if (orientation < 1) {
+      speed = -speed;
+    }
+    satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
+  }
   displayScore(satellites);
 };
 
@@ -296,6 +334,15 @@ function getradarPosition() {
   alert(radarCurrentPosition);
 }
 
+
+// for (var i = 0 ; i < 10 ; i++) {
+//   var speed = getRandomArbitrary(0.5, 1);
+//   var orientation = getRandomArbitrary(0, 2);
+//   if (orientation < 1) {
+//     speed = -speed;
+//   }
+//   satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
+
 function addSatellite(position){
     var targetSatellite;
     var targetY;
@@ -306,26 +353,31 @@ function addSatellite(position){
       targetSatellite = satellite1;
       targetY = satellite1Y;
       targetAnchorpoint = 165;
-      targetSpeed = getRandomArbitrary(0.5, 1);
+      targetSpeed = getRandomArbitrary(0.5, 1.3);
     } else if(position == 2){
       targetSatellite = satellite2;
       targetY = satellite2Y;
       targetAnchorpoint = 211;
-      targetSpeed = getRandomArbitrary(0.5, 1);
+      targetSpeed = getRandomArbitrary(0.4, 1.5);
     } else if(position == 3){
       targetSatellite = satellite3;
       targetY = satellite3Y;
       targetAnchorpoint = 257;
-      targetSpeed = getRandomArbitrary(0.1, 0.5);
+      targetSpeed = getRandomArbitrary(0.4, 0.8);
     }
+      var orientation = getRandomArbitrary(0, 2);
+      if (orientation < 1) {
+        targetSpeed = -targetSpeed;
+      }
     satellites.push([targetSatellite, 423, targetY, targetAnchorpoint, 1, targetSpeed, targetAngle, 27]);
     displayScore(satellites);
   }
 
+
 function addRocket() {
   var radarCurrentPosition = radars[radars.length-1][6];
   //rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, 250, 0, 0.4, 0]);
-  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, /*0.05*/ 1, 0.4, radarCurrentPosition, rocketAnchorX]);
+  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, /*0.05*/ 1, 0.4, /*radarCurrentPosition*/ 90, rocketAnchorX]);
 }
 
 var buttonAriane = document.getElementById("buttonAriane")
@@ -387,14 +439,24 @@ function checkExistingSatellitesPositions(position) {
          // dans zone a risque
          if ((testedSatellite[2] == satellite1Y) && (position == 1)) {
           alert('BOOM avec 1');
-          // testedSatellite[1] = satellite1_crashed;
-          willCrash = true;
+          
+          //if (testedSatellite[5] === 0) {
+          //  alert(`Hey tu m'avais déjà touché, je suis loin maintenant MAIS peut-être un autre satellite va bouger sinon, bravo, ça va créer un` );
+          //} else {
+            //testedSatellite[5] = 0;
+            willCrash = true;
+            break;
+          //}
          } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
-          alert('BOOM avec 2');
+          //  alert('BOOM avec 2');
+           testedSatellite[5] = 0;
           willCrash = true;
+          break;
          } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
-          alert('BOOM avec 3');
+          //  alert('BOOM avec 3');
+           testedSatellite[5] = 0;
           willCrash = true;
+          break;
          }
       }
     }
@@ -407,16 +469,22 @@ function checkExistingSatellitesPositions(position) {
       if (((testedSatellite[6] >= angleLimitLeft) && (testedSatellite[6] <= 360)) || ((testedSatellite[6] <= angleLimitRight) && (testedSatellite[6] >= 0))) {
         // dans zone a risque
         if ((testedSatellite[2] == satellite1Y) && (position == 1)) {
-          alert(`BOOM avec 1` );
+          // alert(`BOOM avec 1` );
+          testedSatellite[5] = 0;
           // testedSatellite[1] = satellite1_crashed;
           // testedSatellite[4] = 2;
           willCrash = true;
+          break;
         } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
-          alert('BOOM avec 2');
+          // alert('BOOM avec 2');
+          testedSatellite[5] = 0;
           willCrash = true;
+          break;
         } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
-          alert('BOOM avec 3');
+          // alert('BOOM avec 3');
+          testedSatellite[5] = 0;
           willCrash = true;
+          break;
         }
       }
     }
@@ -455,9 +523,6 @@ function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
   }
   //alert('y = ' + y);
 }
-
-
-
 
 
 // EasingFunctions = {
@@ -501,3 +566,4 @@ function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
 //       return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t
 //   }
 // }
+
