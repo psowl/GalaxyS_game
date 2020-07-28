@@ -41,8 +41,9 @@ function drawImageRotated(img, x, y, anchorPointY, scale, rot, anchorPointX) {
   ctx.restore();
 }
 
-function drawRocketRotated(img, x, y, anchorPointY, scale, rot, anchorPointX) {
+function drawRocketRotated(img, x, y, anchorPointY, scale, rot, anchorPointX, opacity) {
   ctx.save();
+  ctx.globalAlpha = opacity;
   ctx.translate(canvas.width/2-anchorPointX ,canvas.height/2 - anchorPointY);
   //ctx.translate(x, y);
   ctx.translate(anchorPointX, anchorPointY);
@@ -123,12 +124,23 @@ function mainLoop() {
     var cr = rockets[i]; // current rocket
     // cr[1] += cr[5];
     cr[2] -= cr[5]/2;
+    
     if (cr[4]<1){
       // cr[4] = EasingFunctions.easeInOutQuad(0.003) * 1;
       cr[4] += 0.030;
     }
-    
-    drawRocketRotated(cr[0],cr[1],cr[2], cr[3],cr[4],cr[6], cr[7]); 
+    if (cr[8] == false) {  // s'il n'est plus alive
+    cr[2] -= cr[5]*5;
+    if (cr[9] > 0) {
+      cr[9] -= 0.01;
+    } 
+
+    if (cr[9] < 0) { // to avoid going below 0
+      cr[9] = 0;
+    }
+  }
+
+    drawRocketRotated(cr[0],cr[1],cr[2], cr[3],cr[4],cr[6], cr[7], cr[9]); 
     // example : drawImageRotated([satellite1, 423, 285, 165, 1, getRandomArbitrary(0.5, 1), 0]), 
     //which is (img, x, y, anchorPoint, scale, rotation speed randomly beetween 0.5-1, rot angle at 0)
     
@@ -386,7 +398,7 @@ function addSatellite(position){
 function addRocket() {
   var radarCurrentPosition = radars[radars.length-1][6];
   //rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, 250, 0, 0.4, 0]);
-  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, 0.05, 0.4, radarCurrentPosition, rocketAnchorX, true]);
+  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, 0.05, 0.4, radarCurrentPosition, rocketAnchorX, true, 1]);
 }
 
 var buttonAriane = document.getElementById("buttonAriane")
@@ -419,7 +431,7 @@ document.onkeydown = function (e) {
 
 
 function checkExistingSatellitesPositions(position) {
-  alert('position satellite:' + satellites[satellites.length -1][6] + ' position ariane:' + rockets[rockets.length-1][6]);
+
   
   //alert('checkExistingSatellitesPositions');
 
@@ -440,10 +452,12 @@ function checkExistingSatellitesPositions(position) {
   // alert('rocketRotangle = ' + rocketRotangle + ' / zoneAnglemargin = ' + zoneAnglemargin + ' / angleLimitLeft = ' + angleLimitLeft + ' / angleLimitRight = ' + angleLimitRight);
 
   if(angleLimitRight > angleLimitLeft) {
+    
     // alert('pas à cheval sur 360');
     for (var i = 0; i<satellites.length; i++) {
       //if((position >= rotLeft) && (position <= rotRight)) {
       var testedSatellite = satellites[i];
+      alert('position satellite:' + testedSatellite[6] + ' position ariane:' + rockets[rockets.length-1][6]);
       //alert(testedSatellite[6]);
       if ((testedSatellite[6] <= angleLimitRight) && (testedSatellite[6] >= angleLimitLeft)) {
          // dans zone a risque
@@ -454,6 +468,7 @@ function checkExistingSatellitesPositions(position) {
           //} else {
             // testedSatellite[5] = 3 ; // to stop rotation on itself
             testedSatellite[8] = false;
+            rockets[rockets.length-1][8] = false;
             willCrash = true;
             break;
           //}
@@ -461,13 +476,16 @@ function checkExistingSatellitesPositions(position) {
           //  alert('BOOM avec 2');
           //  testedSatellite[5] = 0;
           testedSatellite[8] = false;
+          rockets[rockets.length-1][8] = false;
           willCrash = true;
           break;
          } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
           //  alert('BOOM avec 3');
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
+          rockets[rockets.length-1][8] = false;
           willCrash = true;
+          
           break;
          }
       }
@@ -476,6 +494,7 @@ function checkExistingSatellitesPositions(position) {
     // alert('à cheval sur 360');
     for (var i = 0; i<satellites.length; i++) {
       var testedSatellite = satellites[i];
+      alert('position satellite:' + testedSatellite[6] + ' position ariane:' + rockets[rockets.length-1][6]);
       //alert(testedSatellite[6]);
       //if ((testedSatellite[6] >= angleLimitRight) && (testedSatellite[6] <= angleLimitLeft)) {
       if (((testedSatellite[6] >= angleLimitLeft) && (testedSatellite[6] <= 360)) || ((testedSatellite[6] <= angleLimitRight) && (testedSatellite[6] >= 0))) {
@@ -486,6 +505,7 @@ function checkExistingSatellitesPositions(position) {
           // testedSatellite[1] = satellite1_crashed;
           // testedSatellite[4] = 2;
           testedSatellite[8] = false;
+          rockets[rockets.length-1][8] = false;
           willCrash = true;
           break;
         } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
@@ -493,12 +513,14 @@ function checkExistingSatellitesPositions(position) {
           // alert('BOOM avec 2');
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
+          rockets[rockets.length-1][8] = false;
           willCrash = true;
           break;
         } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
           // alert('BOOM avec 3');
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
+          rockets[rockets.length-1][8] = false;
           willCrash = true;
           break;
         }
