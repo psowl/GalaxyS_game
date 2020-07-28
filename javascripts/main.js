@@ -35,6 +35,7 @@ var rocketAnchorY = 123;
 document.body.onload = function() {
   requestAnimationFrame(mainLoop);
   addRadar();
+  addseveralSatellites();
 };
 
 var canvas = document.getElementById('canvas');
@@ -179,12 +180,17 @@ function getradarPosition() {
   alert(radarCurrentPosition);
 }
 
-function addSatellite(position){
+function addSatellite(position, randomPosition){
     var targetSatellite;
     var targetY;
     var targetAnchorpoint;
     var targetSpeed;
-    var targetAngle= rockets[rockets.length-1][6]; 
+    var targetAngle;
+    if (randomPosition == true) {
+      targetAngle = getRandomArbitrary(0, 360);
+    } else {
+      targetAngle = rockets[rockets.length-1][6]; 
+    }
     if(position == 1){
       targetSatellite = satellite1;
       targetY = satellite1Y;
@@ -194,7 +200,7 @@ function addSatellite(position){
       targetSatellite = satellite2;
       targetY = satellite2Y;
       targetAnchorpoint = 211;
-      targetSpeed = getRandomArbitrary(0.4, 1.5);
+      targetSpeed = getRandomArbitrary(0.4, 1.2);
     } else if(position == 3){
       targetSatellite = satellite3;
       targetY = satellite3Y;
@@ -210,6 +216,18 @@ function addSatellite(position){
     displayScore(satellites);
   }
 
+function addseveralSatellites(position) {
+  for (var i = 0 ; i < 5 ; i++) {
+    addSatellite(1, true);
+  } 
+  for (var i = 0 ; i < 5 ; i++) {
+    addSatellite(2, true);
+  } 
+  for (var i = 0 ; i < 5 ; i++) {
+    addSatellite(3, true);
+  } 
+displayScore(satellites);
+}
 
 function addRocket() {
   var radarCurrentPosition = radars[radars.length-1][6];
@@ -265,8 +283,6 @@ if (nextspacebarFunction == "goaddRocket") {
 
 
 function checkExistingSatellitesPositions(position) {
-
-  
   //alert('checkExistingSatellitesPositions');
 
   // var rotLeft = 350;
@@ -302,7 +318,6 @@ function checkExistingSatellitesPositions(position) {
           //} else {
             // testedSatellite[5] = 3 ; // to stop rotation on itself
             testedSatellite[8] = false;
-            rockets[rockets.length-1][8] = false;
             willCrash = true;
             break;
           //}
@@ -310,14 +325,12 @@ function checkExistingSatellitesPositions(position) {
           //  alert('BOOM avec 2');
           //  testedSatellite[5] = 0;
           testedSatellite[8] = false;
-          rockets[rockets.length-1][8] = false;
           willCrash = true;
           break;
          } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
           //  alert('BOOM avec 3');
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
-          rockets[rockets.length-1][8] = false;
           willCrash = true;
           
           break;
@@ -339,7 +352,6 @@ function checkExistingSatellitesPositions(position) {
           // testedSatellite[1] = satellite1_crashed;
           // testedSatellite[4] = 2;
           testedSatellite[8] = false;
-          rockets[rockets.length-1][8] = false;
           willCrash = true;
           break;
         } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
@@ -347,14 +359,12 @@ function checkExistingSatellitesPositions(position) {
           // alert('BOOM avec 2');
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
-          rockets[rockets.length-1][8] = false;
           willCrash = true;
           break;
         } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
           // alert('BOOM avec 3');
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
-          rockets[rockets.length-1][8] = false;
           willCrash = true;
           break;
         }
@@ -362,7 +372,7 @@ function checkExistingSatellitesPositions(position) {
     }
   }
   if (willCrash == false) {
-    addSatellite(position);
+    addSatellite(position, false); //false -> not random, angle de la fusée
   } else {
     boom += 1;
     // alert(`boom: ${boom}`)
@@ -411,9 +421,11 @@ function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
     //addSatellite(1);
   } else if (y >= borderLowest) {
     alert("too early");
+    
   } else {
     alert("too late");
   }
+  rockets[rockets.length-1][8] = false;
   //alert('y = ' + y);
 }
 
@@ -480,6 +492,7 @@ button1.onclick = function () {
   
   displayScore(satellites);
 };
+
 
 var button2 = document.getElementById("button2")
 button2.onclick = function () {
