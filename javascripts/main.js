@@ -23,6 +23,7 @@ var chancePoints;
 //Rotate satellite around the center of canvas
 document.body.onload = function() {
   requestAnimationFrame(mainLoop);
+  addRadar();
 };
 
 var canvas = document.getElementById('canvas');
@@ -75,6 +76,7 @@ function mainLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(globe, canvas.width/2 - globe.width/2, canvas.height/2 - globe.height/2);
   ctx.drawImage(anneau, canvas.width/2 - anneau.width/2, canvas.height/2 - anneau.height/2);
+  
   // ctx.drawImage(ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, (90/310)*200, 200);
 
   // drawImageRotated(satellite1,423, 285, 165, 1, rotation1);
@@ -87,12 +89,11 @@ function mainLoop() {
   // }
   
 
-
   for (var i=0; i<satellites.length; i++) {
     var cs = satellites[i]; // current satellite
     if (cs[8] == false) {  // s'il n'est plus alive
-        cs[4] += 0.15;
-        cs[5] = 3;
+        cs[4] += 0.10;
+        cs[5] = 2;
         // TO DELETE SATELLITE
           // var lastRadar = radars[radars.length-1];
           // radars.splice(lastRadar,1);
@@ -135,7 +136,7 @@ function mainLoop() {
   requestAnimationFrame(mainLoop);
   
 }
-
+// function to apply to get random angle step (speed) 
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
