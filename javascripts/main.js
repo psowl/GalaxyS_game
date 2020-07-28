@@ -102,7 +102,7 @@ function mainLoop() {
       // Y := originY + sin(angle)*radius;
     
     cs[6] += cs[5];
-    cs[6] = cs[6]%360;
+    cs[6] = (cs[6]+360) % 360;
 
     drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],cs[6], cs[7], cs[8]); 
     // example : drawImageRotated([satellite1, 423, 285, 165, 1, getRandomArbitrary(0.5, 1), 0]), 
@@ -247,7 +247,8 @@ var button2 = document.getElementById("button2")
 button2.onclick = function () {
   // rotations.push(0);
   // speed.push(getRandomArbitrary(0.5, 1));
-  satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), getRandomArbitrary(0, 360), 27]);
+   satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), getRandomArbitrary(0, 360), 27]);
+  // satellites.push([satellite2, 423, satellite2Y, 211, 1, -0.8, getRandomArbitrary(0, 360), 27]) // test anti clock wise
   displayScore(satellites);
 };
  
@@ -418,6 +419,8 @@ document.onkeydown = function (e) {
 
 
 function checkExistingSatellitesPositions(position) {
+  alert('position satellite:' + satellites[satellites.length -1][6] + ' position ariane:' + rockets[rockets.length-1][6]);
+  
   //alert('checkExistingSatellitesPositions');
 
   // var rotLeft = 350;
@@ -486,6 +489,7 @@ function checkExistingSatellitesPositions(position) {
           willCrash = true;
           break;
         } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
+          alert('position' + testedSatellite[6]);
           // alert('BOOM avec 2');
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
