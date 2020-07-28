@@ -103,9 +103,9 @@ function mainLoop() {
     cs[6] += cs[5];
     cs[6] = cs[6]%360;
 
-    drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],cs[6], cs[7]); 
+    drawImageRotated(cs[0],cs[1],cs[2], cs[3], cs[4],cs[6], cs[7], cs[8]); 
     // example : drawImageRotated([satellite1, 423, 285, 165, 1, getRandomArbitrary(0.5, 1), 0]), 
-    //which is (img, x, y, anchorPointY, scale, rotation speed randomly beetween 0.5-1, rot angle at 0,anchorPointX)
+    //which is (img, x, y, anchorPointY, scale, rotation speed randomly beetween 0.5-1, rot angle at 0,anchorPointX, isAlive)
   }
 
   for (var i=0; i<radars.length; i++) {
