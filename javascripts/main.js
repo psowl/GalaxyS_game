@@ -13,11 +13,22 @@ ariane.src = 'img/ariane.png'
 var radar = new Image();
 radar.src = 'img/radar.png'
 
-// var satellite1_crashed = new Image();
-// satellite1_crashed.src = './img/satellite1_crashed.png'
-
 var boom;
 var chancePoints;
+// var rotations = [];
+// var speed = [];
+var satellites;
+var rockets;
+var radars = [];
+var satellite1Y= 285;
+var satellite2Y = 239;
+var satellite3Y = 193;
+var rocketAnchorX = 18;
+var rocketAnchorY = 123;
+
+// var rotations = [0,0,0];
+// var speed = [getRandomArbitrary(0.5, 1),getRandomArbitrary(0.5, 1),getRandomArbitrary(0.1, 0.5)];
+//var satellites = [[satellite1,423, 285, 165, 1],[satellite2,423, 239, 211, 1],[satellite3],423, 193, 257, 1]];
 
 
 //Rotate satellite around the center of canvas
@@ -55,7 +66,6 @@ function drawRocketRotated(img, x, y, anchorPointY, scale, rot, anchorPointX, op
   // ctx.translate(-x, -y);
   ctx.restore();
 }
-
 
 function degtorad (deg) {
   rad = deg * Math.PI / 180;
@@ -153,124 +163,9 @@ function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-// var rotations = [];
-// var speed = [];
-var satellites;
-var rockets;
-var radars = [];
-var satellite1Y= 285;
-var satellite2Y = 239;
-var satellite3Y = 193;
-var rocketAnchorX = 18;
-var rocketAnchorY = 123;
-
-
-// var rotations = [0,0,0];
-// var speed = [getRandomArbitrary(0.5, 1),getRandomArbitrary(0.5, 1),getRandomArbitrary(0.1, 0.5)];
-//var satellites = [[satellite1,423, 285, 165, 1],[satellite2,423, 239, 211, 1],[satellite3],423, 193, 257, 1]];
-
-var buttonStart = document.getElementById("buttonStart");
-buttonStart.onclick = function () {
-  addRadar();
-};
-//(img, x, y, anchorPoint, scale, rotation speed randomly beetween 0.5-1, rot angle at 0, anchorPointX)
-
 function addRadar(){
   radars.push([radar, 354, 192, 258, 1, 0.4, 0, 96]);
 }
-
-// var nextspacebarFunction = "goaddRadar";
-
-function onSpaceBarReleased() {
-  // alert('onSpaceBarReleased');
-  if (nextspacebarFunction == "goaddRadar") {
-    addRadar();
-    nextspacebarFunction = "goaddRocket";
-  } else if (nextspacebarFunction == "goaddRocket") {
-      addRocket();
-      // deleteLastRadar();
-      nextspacebarFunction = "goaddSatellite";
-    } else if(nextspacebarFunction == "goaddSatellite") {
-      var lastRocket = rockets[rockets.length-1];
-      var lastRocketY = lastRocket[2];
-      var lastRocketScale = lastRocket[4];
-      var rocketAnchorPointY = lastRocket[3];
-      //alert(lastRocketY);
-      checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPointY);
-      //addSatellite();
-      nextspacebarFunction = "goaddRocket";
-    }
-  
-}
-
-var buttonSpacebar = document.getElementById("buttonSpacebar")
-buttonSpacebar.onclick = function () {
-  onSpaceBarReleased();
-  /*if (nextspacebarFunction == "goaddRadar") {
-    addRadar();
-    nextspacebarFunction = "goaddRocket";
-  } else if (nextspacebarFunction == "goaddRocket") {
-    addRocket();
-    nextspacebarFunction = "goaddSatellite";
-  } else if(nextspacebarFunction == "goaddSatellite") {
-    var lastRocket = rockets[rockets.length-1];
-    var lastRocketY = lastRocket[2];
-    var lastRocketScale = lastRocket[4];
-    var rocketAnchorPoint = lastRocket[3];
-    checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPoint);
-    nextspacebarFunction = "goaddRocket";
-  }*/
-};
-
-// function getRandomOrientedSatellite() {
-
-//   for (var i = 0 ; i < 10 ; i++) {
-//     var speed = getRandomArbitrary(0.5, 1);
-//     var orientation = getRandomArbitrary(0, 2);
-//     if (orientation < 1) {
-//       speed = -speed;
-//     }
-//     satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
-//   }
-//   displayScore(satellites);
-// }
-
-var button1 = document.getElementById("button1")
-button1.onclick = function () {
-  // rotations.push(0);
-  // speed.push(getRandomArbitrary(0.5, 1));    
-
-  // satellites.push([satellite1, 423, satellite1Y, 165, 1, getRandomArbitrary(0.5, 1), 0, 27]);
-  
-  for (var i = 0 ; i < 10 ; i++) {
-    var speed = getRandomArbitrary(0.5, 1);
-    var orientation = getRandomArbitrary(0, 2);
-    if (orientation < 1) {
-      speed = -speed;
-    }
-    
-    satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
-  }
-  
-  displayScore(satellites);
-};
-
-var button2 = document.getElementById("button2")
-button2.onclick = function () {
-  // rotations.push(0);
-  // speed.push(getRandomArbitrary(0.5, 1));
-   satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), getRandomArbitrary(0, 360), 27]);
-  // satellites.push([satellite2, 423, satellite2Y, 211, 1, -0.8, getRandomArbitrary(0, 360), 27]) // test anti clock wise
-  displayScore(satellites);
-};
- 
-var button3 = document.getElementById("button3")
-button3.onclick = function () {
-  // rotations.push(0);
-  // speed.push(getRandomArbitrary(0.1, 0.5));
-  satellites.push([satellite3, 423, satellite3Y, 257, 1,getRandomArbitrary(0.1, 0.5), 0, 27]);
-  displayScore(satellites);
-};
 
 var satellitesRunning;
 function displayScore (array) {
@@ -278,90 +173,11 @@ function displayScore (array) {
   document.getElementById('score').innerHTML = `You have ${satellitesRunning} satellites running around the globe! You have ${chancePoints} chances! `;
 }
 
-function deleteRandomSatellite (){
-    var randomIndex = Math.floor(Math.random()*satellites.length);
-    satellites.splice(randomIndex, 1);
-    // rotations.splice(randomIndex, 1);
-    // speed.splice(randomIndex, 1);
-    console.log(satellites);
-}
-
-function deleteLastRadar () {
-  var lastRadar = radars[radars.length-1];
-  radars.splice(lastRadar,1);
-}
-
-var buttonDeleteRadar = document.getElementById("buttonDeleteRadar")
-buttonDeleteRadar.onclick = function () {
-  deleteLastRadar();
-}
-
-var deleteButton = document.getElementById("buttonDelete")
-deleteButton.onclick = function () {
-deleteRandomSatellite(satellites);
-displayScore(satellites);
-}
-
-var positionButton = document.getElementById("buttonPosition")
-positionButton.onclick = function () {
-  getSatellitePositions();
-}
-
-function getSatellitePositions(){
-  var satellitesPositionArray = [];
-  for (var i=0; i<satellites.length; i++) {
-  var eachSatellitesPosition = satellites[i][6]; 
-  satellitesPositionArray.push(eachSatellitesPosition);
-}  
-alert(satellitesPositionArray);
-};
-
-var positionRocketButton = document.getElementById("buttonRocketsPosition");
-positionRocketButton.onclick = function () {
-  getRocketPositions();
-};
-
-function getRocketPositions(){
-  var rocketsPositionArray = [];
-  for (var i=0; i<rockets.length; i++) {
-  // var eachRocketPositionX = rockets[i][[1]]
-  // var eachRocketPositionY = rockets[i][[2]]
-  var eachRocketPositionX = rockets[i][1];
-  var eachRocketPositionY = rockets[i][2];
-  var eachRocketPositionOrientation = rockets[i][6];
-  rocketsPositionArray.push(`X=${eachRocketPositionX}`, `Y=${eachRocketPositionY}`, `Orientation=${eachRocketPositionOrientation}` );
-}  
-alert(rocketsPositionArray);
-};
-
-var positionRadarButton = document.getElementById("buttonRadarPosition")
-positionRadarButton.onclick = function () {
-  getradarPosition();
-}  
-
-
-// function getradarPositionArray() {
-//   var radarPositionArray = [];
-//   for (var i=0; i<radars.length; i++) {
-//   var eachRadarPosition = radars[i][6]; 
-//   radarPositionArray.push(eachRadarPosition);
-// }
-// alert(radarPositionArray);
-// };
 
 function getradarPosition() {
   var radarCurrentPosition = radars[radars.length - 1][6]; 
   alert(radarCurrentPosition);
 }
-
-
-// for (var i = 0 ; i < 10 ; i++) {
-//   var speed = getRandomArbitrary(0.5, 1);
-//   var orientation = getRandomArbitrary(0, 2);
-//   if (orientation < 1) {
-//     speed = -speed;
-//   }
-//   satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
 
 function addSatellite(position){
     var targetSatellite;
@@ -401,32 +217,50 @@ function addRocket() {
   rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, 0.05, 0.4, radarCurrentPosition, rocketAnchorX, true, 1]);
 }
 
-var buttonAriane = document.getElementById("buttonAriane")
-buttonAriane.onclick = function () {
-  addRocket();
-}
 
 var nextspacebarFunction = "goaddRocket";
 
 //make satellite appear when space bar is pressed
 document.onkeydown = function (e) {
+  // alert('keydown');
   console.log('keydown');
   if(e.keyCode === 32) {
-    /*if (nextspacebarFunction == "goaddRocket") {
+    // if (nextspacebarFunction == "goaddRocket") {
+    //   alert('adding rocket')
+    //   addRocket();
+    //   nextspacebarFunction = "goaddSatellite";
+    // } else if(nextspacebarFunction == "goaddSatellite") {
+    //   var lastRocket = rockets[rockets.length-1];
+    //   var lastRocketY = lastRocket[2];
+    //   var lastRocketScale = lastRocket[4];
+    //   var rocketAnchorPoint = lastRocket[3];
+    //   //alert(lastRocketY);
+    //   checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPoint);
+    //   alert('adding satellite')
+    //   addSatellite();
+    //   nextspacebarFunction = "goaddRocket";
+    // }
+    onSpaceBarReleased();
+  }
+}
+
+function onSpaceBarReleased() {
+  // alert('onSpaceBarReleased');
+if (nextspacebarFunction == "goaddRocket") {
       addRocket();
+      // deleteLastRadar();
       nextspacebarFunction = "goaddSatellite";
     } else if(nextspacebarFunction == "goaddSatellite") {
       var lastRocket = rockets[rockets.length-1];
       var lastRocketY = lastRocket[2];
       var lastRocketScale = lastRocket[4];
-      var rocketAnchorPoint = lastRocket[3];
+      var rocketAnchorPointY = lastRocket[3];
       //alert(lastRocketY);
-      checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPoint);
+      checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPointY);
       //addSatellite();
       nextspacebarFunction = "goaddRocket";
-    }*/
-    onSpaceBarReleased();
-  }
+    }
+  
 }
 
 
@@ -457,7 +291,7 @@ function checkExistingSatellitesPositions(position) {
     for (var i = 0; i<satellites.length; i++) {
       //if((position >= rotLeft) && (position <= rotRight)) {
       var testedSatellite = satellites[i];
-      alert('position satellite:' + testedSatellite[6] + ' position ariane:' + rockets[rockets.length-1][6]);
+      // alert('position satellite:' + testedSatellite[6] + ' position ariane:' + rockets[rockets.length-1][6]);
       //alert(testedSatellite[6]);
       if ((testedSatellite[6] <= angleLimitRight) && (testedSatellite[6] >= angleLimitLeft)) {
          // dans zone a risque
@@ -494,7 +328,7 @@ function checkExistingSatellitesPositions(position) {
     // alert('à cheval sur 360');
     for (var i = 0; i<satellites.length; i++) {
       var testedSatellite = satellites[i];
-      alert('position satellite:' + testedSatellite[6] + ' position ariane:' + rockets[rockets.length-1][6]);
+      // alert('position satellite:' + testedSatellite[6] + ' position ariane:' + rockets[rockets.length-1][6]);
       //alert(testedSatellite[6]);
       //if ((testedSatellite[6] >= angleLimitRight) && (testedSatellite[6] <= angleLimitLeft)) {
       if (((testedSatellite[6] >= angleLimitLeft) && (testedSatellite[6] <= 360)) || ((testedSatellite[6] <= angleLimitRight) && (testedSatellite[6] >= 0))) {
@@ -583,7 +417,161 @@ function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
   //alert('y = ' + y);
 }
 
+//BUTTONS
 
+var buttonStart = document.getElementById("buttonStart");
+buttonStart.onclick = function () {
+  addRadar();
+};
+//(img, x, y, anchorPoint, scale, rotation speed randomly beetween 0.5-1, rot angle at 0, anchorPointX)
+
+
+var buttonSpacebar = document.getElementById("buttonSpacebar")
+buttonSpacebar.onclick = function () {
+  onSpaceBarReleased();
+  /*if (nextspacebarFunction == "goaddRadar") {
+    addRadar();
+    nextspacebarFunction = "goaddRocket";
+  } else if (nextspacebarFunction == "goaddRocket") {
+    addRocket();
+    nextspacebarFunction = "goaddSatellite";
+  } else if(nextspacebarFunction == "goaddSatellite") {
+    var lastRocket = rockets[rockets.length-1];
+    var lastRocketY = lastRocket[2];
+    var lastRocketScale = lastRocket[4];
+    var rocketAnchorPoint = lastRocket[3];
+    checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPoint);
+    nextspacebarFunction = "goaddRocket";
+  }*/
+};
+
+// var nextspacebarFunction = "goaddRadar";
+
+
+// function getRandomOrientedSatellite() {
+
+//   for (var i = 0 ; i < 10 ; i++) {
+//     var speed = getRandomArbitrary(0.5, 1);
+//     var orientation = getRandomArbitrary(0, 2);
+//     if (orientation < 1) {
+//       speed = -speed;
+//     }
+//     satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
+//   }
+//   displayScore(satellites);
+// }
+
+var button1 = document.getElementById("button1")
+button1.onclick = function () {
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.5, 1));    
+
+  // satellites.push([satellite1, 423, satellite1Y, 165, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+  
+  for (var i = 0 ; i < 10 ; i++) {
+    var speed = getRandomArbitrary(0.5, 1);
+    var orientation = getRandomArbitrary(0, 2);
+    if (orientation < 1) {
+      speed = -speed;
+    }
+    
+    satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
+  }
+  
+  displayScore(satellites);
+};
+
+var button2 = document.getElementById("button2")
+button2.onclick = function () {
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.5, 1));
+   satellites.push([satellite2, 423, satellite2Y, 211, 1, getRandomArbitrary(0.5, 1), getRandomArbitrary(0, 360), 27]);
+  // satellites.push([satellite2, 423, satellite2Y, 211, 1, -0.8, getRandomArbitrary(0, 360), 27]) // test anti clock wise
+  displayScore(satellites);
+};
+ 
+var button3 = document.getElementById("button3")
+button3.onclick = function () {
+  // rotations.push(0);
+  // speed.push(getRandomArbitrary(0.1, 0.5));
+  satellites.push([satellite3, 423, satellite3Y, 257, 1,getRandomArbitrary(0.1, 0.5), 0, 27]);
+  displayScore(satellites);
+};
+
+function deleteRandomSatellite (){
+  var randomIndex = Math.floor(Math.random()*satellites.length);
+  satellites.splice(randomIndex, 1);
+  // rotations.splice(randomIndex, 1);
+  // speed.splice(randomIndex, 1);
+  console.log(satellites);
+}
+
+function deleteLastRadar () {
+var lastRadar = radars[radars.length-1];
+radars.splice(lastRadar,1);
+}
+
+var buttonDeleteRadar = document.getElementById("buttonDeleteRadar")
+buttonDeleteRadar.onclick = function () {
+deleteLastRadar();
+}
+
+var deleteButton = document.getElementById("buttonDelete")
+deleteButton.onclick = function () {
+deleteRandomSatellite(satellites);
+displayScore(satellites);
+}
+
+var positionButton = document.getElementById("buttonPosition")
+positionButton.onclick = function () {
+getSatellitePositions();
+}
+
+function getSatellitePositions(){
+var satellitesPositionArray = [];
+for (var i=0; i<satellites.length; i++) {
+var eachSatellitesPosition = satellites[i][6]; 
+satellitesPositionArray.push(eachSatellitesPosition);
+}  
+alert(satellitesPositionArray);
+};
+
+var positionRocketButton = document.getElementById("buttonRocketsPosition");
+positionRocketButton.onclick = function () {
+getRocketPositions();
+};
+
+function getRocketPositions(){
+var rocketsPositionArray = [];
+for (var i=0; i<rockets.length; i++) {
+// var eachRocketPositionX = rockets[i][[1]]
+// var eachRocketPositionY = rockets[i][[2]]
+var eachRocketPositionX = rockets[i][1];
+var eachRocketPositionY = rockets[i][2];
+var eachRocketPositionOrientation = rockets[i][6];
+rocketsPositionArray.push(`X=${eachRocketPositionX}`, `Y=${eachRocketPositionY}`, `Orientation=${eachRocketPositionOrientation}` );
+}  
+alert(rocketsPositionArray);
+};
+
+var positionRadarButton = document.getElementById("buttonRadarPosition")
+positionRadarButton.onclick = function () {
+getradarPosition();
+}  
+
+var buttonAriane = document.getElementById("buttonAriane")
+buttonAriane.onclick = function () {
+  addRocket();
+}
+
+// function getradarPositionArray() {
+//   var radarPositionArray = [];
+//   for (var i=0; i<radars.length; i++) {
+//   var eachRadarPosition = radars[i][6]; 
+//   radarPositionArray.push(eachRadarPosition);
+// }
+// alert(radarPositionArray);
+// };
 // EasingFunctions = {
 //   linear: function (t) {
 //       return t
