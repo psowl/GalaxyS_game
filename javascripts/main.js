@@ -16,8 +16,8 @@ radar.src = 'img/radar.png'
 // var satellite1_crashed = new Image();
 // satellite1_crashed.src = './img/satellite1_crashed.png'
 
-var boom = 0;
-var chancePoints = 5;
+var boom;
+var chancePoints;
 
 
 //Rotate satellite around the center of canvas
@@ -90,9 +90,9 @@ function mainLoop() {
 
   for (var i=0; i<satellites.length; i++) {
     var cs = satellites[i]; // current satellite
-    if (cs[5] === 3) {  // s'il ne bouge plus
-        cs[4] += 0.05;
-
+    if (cs[8] == false) {  // s'il n'est plus alive
+        cs[4] += 0.15;
+        cs[5] = 3;
         // TO DELETE SATELLITE
           // var lastRadar = radars[radars.length-1];
           // radars.splice(lastRadar,1);
@@ -142,8 +142,8 @@ function getRandomArbitrary(min, max) {
 
 // var rotations = [];
 // var speed = [];
-var satellites = [];
-var rockets = [];
+var satellites;
+var rockets;
 var radars = [];
 var satellite1Y= 285;
 var satellite2Y = 239;
@@ -226,15 +226,19 @@ var button1 = document.getElementById("button1")
 button1.onclick = function () {
   // rotations.push(0);
   // speed.push(getRandomArbitrary(0.5, 1));    
-  //satellites.push([satellite1, 423, satellite1Y, 165, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+
+  // satellites.push([satellite1, 423, satellite1Y, 165, 1, getRandomArbitrary(0.5, 1), 0, 27]);
+  
   for (var i = 0 ; i < 10 ; i++) {
     var speed = getRandomArbitrary(0.5, 1);
     var orientation = getRandomArbitrary(0, 2);
     if (orientation < 1) {
       speed = -speed;
     }
+    
     satellites.push([satellite1, 423, satellite1Y, 165, 1, speed, getRandomArbitrary(0, 360), 27]);
   }
+  
   displayScore(satellites);
 };
 
@@ -253,10 +257,11 @@ button3.onclick = function () {
   satellites.push([satellite3, 423, satellite3Y, 257, 1,getRandomArbitrary(0.1, 0.5), 0, 27]);
   displayScore(satellites);
 };
-  
+
+var satellitesRunning;
 function displayScore (array) {
-  var satellitesRunning = array.length - boom;
-  document.getElementById('score').innerHTML = `You have ${satellitesRunning} satellites running around the globe! You have ${chancePoints} chances ! `;
+  satellitesRunning = array.length - boom;
+  document.getElementById('score').innerHTML = `You have ${satellitesRunning} satellites running around the globe! You have ${chancePoints} chances! `;
 }
 
 function deleteRandomSatellite (){
@@ -370,7 +375,8 @@ function addSatellite(position){
       if (orientation < 1) {
         targetSpeed = -targetSpeed;
       }
-    satellites.push([targetSatellite, 423, targetY, targetAnchorpoint, 1, targetSpeed, targetAngle, 27]);
+    satellites.push([targetSatellite, 423, targetY, targetAnchorpoint, 1, targetSpeed, targetAngle, 27, true]);
+    // (img, x, y, anchorPointY, scale, rotation speed randomly beetween 0.5-1, rot angle at 0,anchorPointX, isAlive);
     displayScore(satellites);
   }
 
@@ -378,7 +384,7 @@ function addSatellite(position){
 function addRocket() {
   var radarCurrentPosition = radars[radars.length-1][6];
   //rockets.push([ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, 250, 0, 0.4, 0]);
-  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, 0.05, 0.4, radarCurrentPosition, rocketAnchorX]);
+  rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, 0.05, 0.4, radarCurrentPosition, rocketAnchorX, true]);
 }
 
 var buttonAriane = document.getElementById("buttonAriane")
@@ -419,11 +425,10 @@ function checkExistingSatellitesPositions(position) {
   var willCrash = false;
   var zoneAnglemargin = 7;
   if (position == 1) {
-    zoneAnglemargin = 15;
+    zoneAnglemargin = 9;
   } else if (position == 3) {
-    zoneAnglemargin = 5;
+    zoneAnglemargin = 6;
   }
-
 
   var angleLimitLeft = (rocketRotangle - zoneAnglemargin)%360;
   var angleLimitRight = (rocketRotangle + zoneAnglemargin)%360;
@@ -443,19 +448,21 @@ function checkExistingSatellitesPositions(position) {
           //if (testedSatellite[5] === 0) {
           //  alert(`Hey tu m'avais déjà touché, je suis loin maintenant MAIS peut-être un autre satellite va bouger sinon, bravo, ça va créer un` );
           //} else {
-
-            testedSatellite[5] = 3 ; // to stop rotation on itself
+            // testedSatellite[5] = 3 ; // to stop rotation on itself
+            testedSatellite[8] = false;
             willCrash = true;
             break;
           //}
          } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
           //  alert('BOOM avec 2');
-           testedSatellite[5] = 0;
+          //  testedSatellite[5] = 0;
+          testedSatellite[8] = false;
           willCrash = true;
           break;
          } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
           //  alert('BOOM avec 3');
-           testedSatellite[5] = 0;
+          // testedSatellite[5] = 0;
+          testedSatellite[8] = false;
           willCrash = true;
           break;
          }
@@ -474,16 +481,19 @@ function checkExistingSatellitesPositions(position) {
           // testedSatellite[5] = 0;
           // testedSatellite[1] = satellite1_crashed;
           // testedSatellite[4] = 2;
+          testedSatellite[8] = false;
           willCrash = true;
           break;
         } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
           // alert('BOOM avec 2');
-          testedSatellite[5] = 0;
+          // testedSatellite[5] = 0;
+          testedSatellite[8] = false;
           willCrash = true;
           break;
         } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
           // alert('BOOM avec 3');
-          testedSatellite[5] = 0;
+          // testedSatellite[5] = 0;
+          testedSatellite[8] = false;
           willCrash = true;
           break;
         }
@@ -496,18 +506,26 @@ function checkExistingSatellitesPositions(position) {
     boom += 1;
     // alert(`boom: ${boom}`)
     chancePoints -= 1;
-    // alert(`chancePoint:: ${chancePoints}`)
-    displayScore (satellites);
-    if (chancePoints === 0) {
-    gameOver();
-  }
+    // alert('chancePoint = ' + chancePoints)
+    displayScore(satellites);
+    if (chancePoints == 0) {
+      gameOver();
+    }
   }
 }
 
 function gameOver() {
-    alert('YOU LOST !');
+    alert(`YOU LOST! Your score is ${satellitesRunning}, try to beat it next time!`);
+    newGame();
 }
 
+function newGame() {
+  satellites = [];
+  rockets = [];
+  boom = 0;
+  chancePoints = 5;
+  displayScore(satellites);
+}
 
 function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
 //si la position Y de la fusée est = 250
@@ -581,3 +599,4 @@ function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
 //   }
 // }
 
+newGame();
