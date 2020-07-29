@@ -1,0 +1,62 @@
+@font-face { font-family: Alexana; src: url('font/Alexana.ttf'); } 
+ @font-face { font-family: Alexana; font-weight: bold; src: url('font/Alexana.ttf');}
+
+@keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -1920px 0; }
+}
+@-moz-keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -1920px 0; }
+}
+@-webkit-keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -1920px 0; }
+}
+@-ms-keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -1920px 0; }
+}
+@-o-keyframes animatedBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: -1920px 0; }
+}
+
+body {
+    background-color: black;
+    background: url("../img/spaceblue.png") repeat ;
+
+    /* 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+    */
+
+    -moz-animation:animatedBackground 400s linear infinite;
+    -ms-animation:animatedBackground 400s linear infinite;
+    -o-animation:animatedBackground 400s linear infinite;
+    -webkit-animation:animatedBackground 400s linear infinite;
+    animation:animatedBackground 400s linear infinite;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+a {
+    color: #ADD8E6;
+    text-decoration:none;
+    font-size: 100px;
+    box-shadow: 20px 20px 0 rgba(255, 255, 255, .2);
+    background-color: black;
+    color:#ADD8E6;
+    padding: 8px 60px;
+    text-decoration: none;
+    font-family: Alexana, sans-serif;
+    
+
+  }
+
+  
