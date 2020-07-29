@@ -19,17 +19,29 @@
     100% { background-position: -1920px 0; }
 }
 
+  #box {
 
+    /* background-color: coral; */
+    margin: auto;
+    width:900px;
+    height:700px;
+    overflow: hidden;
+    position: relative;
+    /* margin-left: 50%;
+    margin-right: 50%; */
+    } 
+    
 canvas {
-    /*background-color: black;*/
-    background: transparent;
-    border: 1px solid red;
-    /* z-index: 10; */
-    /* position: absolute; */
-    /* width: 900px; */
+    width: 900px;
+    top: -100px;
+    position: absolute;
+
 }
 
+
 body {
+
+
     background-color: black;
     background: url("../img/spaceblue.png") repeat ;
 
@@ -45,9 +57,10 @@ body {
     -o-animation:animatedBackground 400s linear infinite;
     -webkit-animation:animatedBackground 400s linear infinite;
     animation:animatedBackground 400s linear infinite;
-
 }
 
 #score {
     color:#ADD8E6;
+    text-align: center;
+    margin-top: -30px;;
 }
