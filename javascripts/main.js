@@ -35,7 +35,7 @@ var rocketAnchorY = 123;
 document.body.onload = function() {
   requestAnimationFrame(mainLoop);
   addRadar();
-  addseveralSatellites();
+  newGame();
 };
 
 var canvas = document.getElementById('canvas');
@@ -187,9 +187,9 @@ function addSatellite(position, randomPosition){
     var targetSpeed;
     var targetAngle;
     if (randomPosition == true) {
-      targetAngle = getRandomArbitrary(0, 360);
+      targetAngle = getRandomArbitrary(0, 360); // random for the initial satellites running when starting game
     } else {
-      targetAngle = rockets[rockets.length-1][6]; 
+      targetAngle = rockets[rockets.length-1][6];  // follow rocket angle position
     }
     if(position == 1){
       targetSatellite = satellite1;
@@ -312,7 +312,7 @@ function checkExistingSatellitesPositions(position) {
       if ((testedSatellite[6] <= angleLimitRight) && (testedSatellite[6] >= angleLimitLeft)) {
          // dans zone a risque
          if ((testedSatellite[2] == satellite1Y) && (position == 1)) {
-          alert('BOOM avec 1');
+          // alert('BOOM avec 1');
           //if (testedSatellite[5] === 0) {
           //  alert(`Hey tu m'avais déjà touché, je suis loin maintenant MAIS peut-être un autre satellite va bouger sinon, bravo, ça va créer un` );
           //} else {
@@ -332,7 +332,6 @@ function checkExistingSatellitesPositions(position) {
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
           willCrash = true;
-          
           break;
          }
       }
@@ -355,7 +354,7 @@ function checkExistingSatellitesPositions(position) {
           willCrash = true;
           break;
         } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
-          alert('position' + testedSatellite[6]);
+          // alert('position' + testedSatellite[6]);
           // alert('BOOM avec 2');
           // testedSatellite[5] = 0;
           testedSatellite[8] = false;
@@ -374,14 +373,27 @@ function checkExistingSatellitesPositions(position) {
   if (willCrash == false) {
     addSatellite(position, false); //false -> not random, angle de la fusée
   } else {
-    boom += 1;
+    looseSatellitePointsScore();
+  }
+}
+
+function looseSatellitePointsScore() {
+  boom += 1;
     // alert(`boom: ${boom}`)
     chancePoints -= 1;
     // alert('chancePoint = ' + chancePoints)
     displayScore(satellites);
     if (chancePoints == 0) {
       gameOver();
-    }
+  }
+}
+
+function looseChancePoints() {
+  chancePoints -= 1;
+  // alert('chancePoint = ' + chancePoints)
+  displayScore(satellites);
+  if (chancePoints == 0) {
+    gameOver();
   }
 }
 
@@ -391,11 +403,12 @@ function gameOver() {
 }
 
 function newGame() {
+  // alert('to new game');
   satellites = [];
   rockets = [];
   boom = 0;
   chancePoints = 5;
-  displayScore(satellites);
+  addseveralSatellites()
 }
 
 function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
@@ -407,6 +420,7 @@ function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
   var borderBetween2And3 = 233;
   var borderLowest = 325;
   var borderHighest = 185;
+  rockets[rockets.length-1][8] = false;
 
   if ((y <= borderBetween2And3) && (y >= borderHighest)) {
     checkExistingSatellitesPositions(3);
@@ -421,11 +435,12 @@ function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
     //addSatellite(1);
   } else if (y >= borderLowest) {
     alert("too early");
+    looseChancePoints();
     
   } else {
     alert("too late");
+    looseChancePoints();
   }
-  rockets[rockets.length-1][8] = false;
   //alert('y = ' + y);
 }
 
@@ -627,4 +642,3 @@ buttonAriane.onclick = function () {
 //   }
 // }
 
-newGame();
