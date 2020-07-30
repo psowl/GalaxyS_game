@@ -1,3 +1,9 @@
+@font-face { font-family: Alexana; src: url('font/Alexana.ttf'); } 
+@font-face { font-family: Alexana; font-weight: bold; src: url('font/Alexana.ttf');}
+
+@font-face { font-family: Awakenning; src: url('font/Awakenning.ttf'); } 
+@font-face { font-family: Awakenning; font-weight: bold; src: url('font/Awakenning.ttf');}
+
 @keyframes animatedBackground {
     0% { background-position: 0 0; }
     100% { background-position: -1920px 0; }
@@ -20,7 +26,6 @@
 }
 
   #box {
-
     /* background-color: coral; */
     margin: auto;
     width:900px;
@@ -35,13 +40,10 @@ canvas {
     width: 900px;
     top: -100px;
     position: absolute;
-
 }
 
 
 body {
-
-
     background-color: black;
     background: url("../img/spaceblue.png") repeat ;
 
@@ -51,16 +53,49 @@ body {
     -o-background-size: cover;
     background-size: cover; 
     */
-
     -moz-animation:animatedBackground 400s linear infinite;
     -ms-animation:animatedBackground 400s linear infinite;
     -o-animation:animatedBackground 400s linear infinite;
     -webkit-animation:animatedBackground 400s linear infinite;
     animation:animatedBackground 400s linear infinite;
+    /* overflow: hidden; */
+    position: relative;
+}
+
+h1 {
+    font-family: Alexana, sans-serif;
+    color: #ADD8E6;
+    text-align: center;
+    font-size: 50px;
+    /* box-shadow: 20px 20px 0 rgba(255, 255, 255, .2); */
+    /* background-color: black; */
+    color:#ADD8E6;
+    text-decoration: none;
+    margin: 0;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.text {
+    background-color: white 0.2;
+    border-radius: 20px;
+    box-shadow: 20px 20px 0 rgba(255, 255, 255, .2);
+    border: 1px white solid;
+    color: #ADD8E6;
+    position: absolute;
+    width: 20%;
+    top: 100px;
+    left: 30px;
+    text-align: center;
+    /* height: 10%; */
+    margin-right: auto;
+    font-family: Awakenning;
 }
 
 #score {
     color:#ADD8E6;
     text-align: center;
-    margin-top: -30px;;
+    margin: 0;
+    top: -100;
 }
