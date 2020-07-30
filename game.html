@@ -10,21 +10,27 @@
 </head>
 <body>
     <h1> GALAXY S</h1>
-    <div id="container">
+ <div id="container">
         <div id="background"></div>
     <div id="box">
         <canvas id="canvas" width="900" height="900"></canvas>
     </div>
-    </div>
+    
     <div class ='text'>
         <h2> Mission </h2>
-        <p> Your mission is to gently drop the satellites, avoid hitting the others. Good luck ! </p>
+        <p> Your mission is to gently drop the satellites at the right time, avoid hitting the others. If you hit one or drop at the wrong time you loose one chance ! Press space bar to play. <span>Good luck ! </span></p>
     </div>
-
-
+<div class="rightContainer">
     <p id='score'></p>
+    <p id='alert'> </p>
+</div>
 
-    
+<div id='gameOver'>
+    <p id='gameOverText'> </p>
+    <button id="newGame"> NEW GAME?</button> 
+</div>
+
+
     <!-- <button id="buttonStart">START</button> 
     <button id="buttonDeleteRadar">DELETE RADAR</button>
     <button id="buttonSpacebar">SPACE BAR</button> 
@@ -36,7 +42,7 @@
     <button id="buttonPosition">GET SATELLITES POSITIONS</button>
     <button id="buttonAriane">Launch Ariane</button>
     <button id="buttonRocketsPosition">GET ROCKETS POSITIONS</button> -->
-
+</div>
     <script src="javascripts/main.js"></script>
 
 </body>
