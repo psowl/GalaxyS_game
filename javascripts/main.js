@@ -23,6 +23,16 @@ var ariane = new Image();
 ariane.src = 'img/ariane.png'
 var radar = new Image();
 radar.src = 'img/radar.png'
+var oneDollar = new Image();
+oneDollar.src = 'img/0dollars.png';
+var twoDollars = new Image();
+twoDollars.src = 'img/2dollars.png';
+var threeDollars = new Image();
+threeDollars.src = 'img/3dollars.png';
+var fourDollars = new Image();
+fourDollars.src = 'img/4dollars.png';
+var fiveDollars = new Image();
+fiveDollars.src = 'img/5dollars.png';
 
 var boom;
 var chancePoints;
@@ -412,20 +422,20 @@ function checkExistingSatellitesPositions(position) {
   }
 }
 
-
 function looseSatellitePointsScore() {
   boom += 1;
-    // alert(`boom: ${boom}`)
-    chancePoints -= 1;
-    // alert('chancePoint = ' + chancePoints)
-    displayScore(satellites);
-    if (chancePoints == 0) {
-      gameOver();
+  looseChancePoints();
   }
+
+
+function updateDollar (cp){
+    document.getElementById('chancePointsImage').src = 'img/' + cp + 'dollars.png';
 }
+
 
 function looseChancePoints() {
   chancePoints -= 1;
+  updateDollar(chancePoints);
   // alert('chancePoint = ' + chancePoints)
   displayScore(satellites);
   if (chancePoints == 0) {
@@ -468,6 +478,7 @@ function newGame() {
   addseveralSatellites();
   document.getElementById('alert').style.display = "none";
   buttonSound.play();
+  updateDollar(5);
 }
 
 

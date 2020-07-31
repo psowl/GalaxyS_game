@@ -90,19 +90,23 @@ h1 {
     text-align: center;
     margin-right: auto;
     font-family: Astrobia, sans-serif;
+    padding: 10px;
 }
 
 #score {
-    color:#ADD8E6;
-    text-align: center;
-    margin: 0;
-    height: 0;
-    font-family: Astrobia, sans-serif;
+    background-color: white 0.2;
+    border-radius: 20px;
+    box-shadow: 20px 20px 0 rgba(255, 255, 255, .2);
+    border: 1px white solid;
+    color: #ADD8E6;
     position: absolute;
     width: 20%;
     top: 100px;
+    right: 30px;
+    text-align: center;
     margin-left: auto;
-    right: 30px; 
+    font-family: Astrobia, sans-serif;
+    padding: 20px;
 }
 
 #alert {
@@ -115,7 +119,7 @@ h1 {
     color: white;
     position: absolute;
     width: 20%;
-    top: 500px;
+    top: 350px;
     right: 30px; 
     text-align: center;
     margin-left: auto;
@@ -168,3 +172,11 @@ h1 {
     margin: auto;
 }
 
+#chancePointsImage {
+    width: 15%;
+    margin: 0;
+    position: absolute;
+    top: 250px;
+    margin-left: auto;
+    right: 90px; 
+}
