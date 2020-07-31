@@ -1,3 +1,14 @@
+let music = new Audio('sounds/Lux-Aeterna-By-Clint-Mansell.mp3');
+
+let youIdiot = new Audio('sounds/youIdiot.mp3');
+
+let rocketSound = new Audio('sounds/rocketSound.mp3');
+rocketSound.volume = 0.1;
+
+let hitSound = new Audio('sounds/hitSound.mp3');
+let endSound = new Audio('sounds/endSound.mp3');
+let buttonSound = new Audio('sounds/buttonSound.mp3');
+
 var globe = new Image();
 globe.src = 'img/globe.png'
 var anneau = new Image();
@@ -30,6 +41,15 @@ var rocketAnchorY = 123;
 // var speed = [getRandomArbitrary(0.5, 1),getRandomArbitrary(0.5, 1),getRandomArbitrary(0.1, 0.5)];
 //var satellites = [[satellite1,423, 285, 165, 1],[satellite2,423, 239, 211, 1],[satellite3],423, 193, 257, 1]];
 
+// var music = document.getElementById("myAudio"); 
+
+// function playAudio() { 
+//   music.play(); 
+// } 
+
+// function pauseAudio() { 
+//   music.pause(); 
+// } 
 
 //Rotate satellite around the center of canvas
 document.body.onload = function() {
@@ -232,6 +252,7 @@ displayScore(satellites);
 function addRocket() {
   var radarCurrentPosition = radars[radars.length-1][6];
   rockets.push([ariane, canvas.width/2 -rocketAnchorX, canvas.height/2 -rocketAnchorY, rocketAnchorY, 0.05, 0.4, radarCurrentPosition, rocketAnchorX, true, 1]);
+  rocketSound.play();
 }
 
 
@@ -242,6 +263,7 @@ document.onkeydown = function (e) {
   // alert('keydown');
   console.log('keydown');
   if(e.keyCode === 32) {
+    music.play();
     // if (nextspacebarFunction == "goaddRocket") {
     //   alert('adding rocket')
     //   addRocket();
@@ -265,6 +287,7 @@ function onSpaceBarReleased() {
   // alert('onSpaceBarReleased');
 if (nextspacebarFunction == "goaddRocket") {
       addRocket();
+      
       // deleteLastRadar();
       nextspacebarFunction = "goaddSatellite";
     } else if(nextspacebarFunction == "goaddSatellite") {
@@ -319,6 +342,7 @@ function checkExistingSatellitesPositions(position) {
             testedSatellite[8] = false;
             willCrash = true;
             displayAlert('You hit a satellite!');
+            hitSound.play();
             break;
           //}
          } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
@@ -327,6 +351,7 @@ function checkExistingSatellitesPositions(position) {
           testedSatellite[8] = false;
           willCrash = true;
           displayAlert('You hit a satellite!');
+          hitSound.play();
           break;
          } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
           //  alert('BOOM avec 3');
@@ -334,6 +359,7 @@ function checkExistingSatellitesPositions(position) {
           testedSatellite[8] = false;
           willCrash = true;
           displayAlert('You hit a satellite!');
+          hitSound.play();
           break;
          }
       }
@@ -355,6 +381,7 @@ function checkExistingSatellitesPositions(position) {
           testedSatellite[8] = false;
           willCrash = true;
           displayAlert('You hit a satellite!');
+          hitSound.play();
           break;
         } else if ((testedSatellite[2] == satellite2Y) && (position == 2)) {
           // alert('position' + testedSatellite[6]);
@@ -363,6 +390,7 @@ function checkExistingSatellitesPositions(position) {
           testedSatellite[8] = false;
           willCrash = true;
           displayAlert('You hit a satellite!');
+          hitSound.play();
           break;
         } else if ((testedSatellite[2] == satellite3Y) && (position == 3)) {
           // alert('BOOM avec 3');
@@ -370,6 +398,7 @@ function checkExistingSatellitesPositions(position) {
           testedSatellite[8] = false;
           willCrash = true;
           displayAlert('You hit a satellite!');
+          hitSound.play();
           break;
         }
       }
@@ -379,6 +408,7 @@ function checkExistingSatellitesPositions(position) {
     addSatellite(position, false); //false -> not random, angle de la fusée
   } else {
     looseSatellitePointsScore();
+  
   }
 }
 
@@ -407,6 +437,7 @@ function gameOver() {
     // alert(`YOU LOST! Your score is ${satellitesRunning}, try to beat it next time!`);
     document.getElementById('gameOverText').innerHTML = `YOU LOST! Your score is ${satellitesRunning}, try to beat it next time!`;
     document.getElementById('gameOver').style.display = "block";
+    endSound.play();
     // displayNewgame();
     // newGame();
 }
@@ -436,6 +467,7 @@ function newGame() {
   chancePoints = 5;
   addseveralSatellites();
   document.getElementById('alert').style.display = "none";
+  buttonSound.play();
 }
 
 
@@ -467,10 +499,12 @@ function checkaddSatellitevsRocketPosition(y, scale, anchorPoint) {
     // alert("too early");
     displayAlert(`Oh no too early! You are wasting money!`);
     looseChancePoints(); 
+    youIdiot.play();
   } else {
     // alert("too late");
     displayAlert(`Too late! You are wasting money!`);
     looseChancePoints();
+    youIdiot.play();
   }
   //alert('y = ' + y);
 }
