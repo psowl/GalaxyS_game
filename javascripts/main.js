@@ -1,16 +1,17 @@
 let music = new Audio('sounds/Lux-Aeterna-By-Clint-Mansell.mp3');
-
 let youIdiot = new Audio('sounds/youIdiot.mp3');
-
 let rocketSound = new Audio('sounds/rocketSound.mp3');
 rocketSound.volume = 0.1;
-
 let hitSound = new Audio('sounds/hitSound.mp3');
 let endSound = new Audio('sounds/endSound.mp3');
 let buttonSound = new Audio('sounds/buttonSound.mp3');
 
 var globe = new Image();
 globe.src = 'img/globe.png'
+//to refacto
+// var globeAnchorPointX =  (check photoshop)
+// var globeAnchorPointY =  (check photoshop)
+
 var anneau = new Image();
 anneau.src = 'img/anneau.png'
 var satellite1 = new Image();
@@ -51,42 +52,36 @@ var rocketAnchorY = 123;
 // var speed = [getRandomArbitrary(0.5, 1),getRandomArbitrary(0.5, 1),getRandomArbitrary(0.1, 0.5)];
 //var satellites = [[satellite1,423, 285, 165, 1],[satellite2,423, 239, 211, 1],[satellite3],423, 193, 257, 1]];
 
-// var music = document.getElementById("myAudio"); 
-
-// function playAudio() { 
-//   music.play(); 
-// } 
-
-// function pauseAudio() { 
-//   music.pause(); 
-// } 
-
-//Rotate satellite around the center of canvas
+//Render elements of canvas when the page loads
 document.body.onload = function() {
   requestAnimationFrame(mainLoop);
   addRadar();
   newGame();
 };
 
+//Below sets up a canvas and using a main loop rotates the image. 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
+
+// function to rotate image
 function drawImageRotated(img, x, y, anchorPointY, scale, rot, anchorPointX) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.translate(anchorPointX, anchorPointY);
+  ctx.save(); // save the context
+  ctx.translate(x, y); // position de l'image dans le context
+  ctx.translate(anchorPointX, anchorPointY); // position du anchor point de l'image dans le context
   ctx.rotate(degtorad(rot));
   ctx.scale(scale, scale);
   ctx.translate(-(anchorPointX), -(anchorPointY));
   ctx.drawImage(img, 0, 0);
   // ctx.translate(-x, -y);
-  ctx.restore();
+  ctx.restore(); // to set back initial state of the canvas with the image drawn
 }
 
+//another function because rockets move forward straight in y (--y) wherease sattelites rotate
 function drawRocketRotated(img, x, y, anchorPointY, scale, rot, anchorPointX, opacity) {
   ctx.save();
   ctx.globalAlpha = opacity;
-  ctx.translate(canvas.width/2-anchorPointX ,canvas.height/2 - anchorPointY);
+  ctx.translate(canvas.width/2-anchorPointX ,canvas.height/2 - anchorPointY); // position of the rocket is center of the canvas and at the anchorPoint of the rocket
   //ctx.translate(x, y);
   ctx.translate(anchorPointX, anchorPointY);
   ctx.rotate(degtorad(rot));
@@ -107,7 +102,7 @@ function degtorad (deg) {
 // var rotation2 = 0;
 // var rotation3 = 0;
 
-//draw the images and turn in rotation
+//animation
 function mainLoop() {
   // rotation1+=1;
   // rotation1 = rotation1%360;
@@ -116,7 +111,7 @@ function mainLoop() {
   // rotation3+=0.5;
   // rotation3 = rotation3%360;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(globe, canvas.width/2 - globe.width/2, canvas.height/2 - globe.height/2);
+  ctx.drawImage(globe, canvas.width/2 - globe.width/2, canvas.height/2 - globe.height/2); // globe.width/2 should be anchorPoint X of the globe
   ctx.drawImage(anneau, canvas.width/2 - anneau.width/2, canvas.height/2 - anneau.height/2);
   
   // ctx.drawImage(ariane, canvas.width/2- ariane.width/2,canvas.height/2 - ariane.height/2, (90/310)*200, 200);
@@ -163,12 +158,10 @@ function mainLoop() {
 
   for (var i=0; i<rockets.length; i++) {
     var cr = rockets[i]; // current rocket
-    // cr[1] += cr[5];
-    cr[2] -= cr[5]/2;
-    
-    if (cr[4]<1){
+    cr[2] -= cr[5]/2; // equivalent to y, to move forward is '-' and cr[5] is the angle step likely speed    
+    if (cr[4]<1){ //tant que la taille est inférieur à la taille finale 1
       // cr[4] = EasingFunctions.easeInOutQuad(0.003) * 1;
-      cr[4] += 0.030;
+      cr[4] += 0.030; //scale to grow by 0.030; every frame
     }
     if (cr[8] == false) {  // s'il n'est plus alive
     cr[2] -= cr[5]*5;
@@ -186,7 +179,8 @@ function mainLoop() {
     //which is (img, x, y, anchorPoint, scale, rotation speed randomly beetween 0.5-1, rot angle at 0)
     
   }
-  requestAnimationFrame(mainLoop);
+  // to start animation call RAF
+  requestAnimationFrame(mainLoop); // set up the next frame
   
 }
 // function to apply to get random angle step (speed) 
@@ -274,21 +268,6 @@ document.onkeydown = function (e) {
   console.log('keydown');
   if(e.keyCode === 32) {
     music.play();
-    // if (nextspacebarFunction == "goaddRocket") {
-    //   alert('adding rocket')
-    //   addRocket();
-    //   nextspacebarFunction = "goaddSatellite";
-    // } else if(nextspacebarFunction == "goaddSatellite") {
-    //   var lastRocket = rockets[rockets.length-1];
-    //   var lastRocketY = lastRocket[2];
-    //   var lastRocketScale = lastRocket[4];
-    //   var rocketAnchorPoint = lastRocket[3];
-    //   //alert(lastRocketY);
-    //   checkaddSatellitevsRocketPosition(lastRocketY, lastRocketScale, rocketAnchorPoint);
-    //   alert('adding satellite')
-    //   addSatellite();
-    //   nextspacebarFunction = "goaddRocket";
-    // }
     onSpaceBarReleased();
   }
 }
@@ -313,6 +292,8 @@ if (nextspacebarFunction == "goaddRocket") {
   
 }
 
+//to refacto like example below all variable for whole code in the top of the code all together
+//var zoneAnglemarginForPosition2 = 7;
 
 function checkExistingSatellitesPositions(position) {
   //alert('checkExistingSatellitesPositions');
@@ -321,7 +302,7 @@ function checkExistingSatellitesPositions(position) {
   // var rotRight = 10;
   var rocketRotangle = rockets[rockets.length-1][6];
   var willCrash = false;
-  var zoneAnglemargin = 7;
+  var zoneAnglemargin = 7; // with created var above of the code it should be zoneAnglemargin = zoneAnglemarginForPosition2
   if (position == 1) {
     zoneAnglemargin = 9;
   } else if (position == 3) {
@@ -434,7 +415,10 @@ function updateDollar (cp){
 
 
 function looseChancePoints() {
-  chancePoints -= 1;
+  chancePoints -= 1; 
+
+  // to add : if chancePoints < 0 so chancePoints = 0;
+
   updateDollar(chancePoints);
   // alert('chancePoint = ' + chancePoints)
   displayScore(satellites);
@@ -691,6 +675,8 @@ function displayAlert(message) {
 // }
 // alert(radarPositionArray);
 // };
+
+//fading out animation
 // EasingFunctions = {
 //   linear: function (t) {
 //       return t
