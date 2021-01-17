@@ -1,5 +1,5 @@
 # GalaxyS_game
-First coding project - two weeks project. Galaxy S is a game based on Javascript and Canvas. Space universe.
+First coding project - two weeks project. Galaxy S is a game based on Javascript and Canvas. Space & Satellites universe.
 
 ## Tech/Framework used
 HTML, CSS, Javascript, Canvas.
